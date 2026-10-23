@@ -203,7 +203,7 @@ const PRODUCT_DETAILS = {
     ]
   },
   "Calendulas": {
-    "image": null,
+    "image": "assets/flores/calendula.jpg",
     "description": "Conocida como el azafran del pobre, la calendula despliega petalos naranjas y amarillos intensos con un sabor ligeramente picante y amargo. Se usa hace siglos para dar color a arroces, sopas y ensaladas, ademas de sus propiedades tradicionalmente calmantes.",
     "benefits": [
       "Color naranja y amarillo intenso natural",
@@ -213,7 +213,7 @@ const PRODUCT_DETAILS = {
     ]
   },
   "Capuchinas": {
-    "image": null,
+    "image": "assets/flores/capuchina.jpg",
     "description": "Las capuchinas sorprenden con un sabor picante que recuerda al berro o a un wasabi suave. Tanto sus flores como sus hojas son comestibles y aportan un contraste fresco y especiado a ensaladas, tacos y platos de autor.",
     "benefits": [
       "Sabor picante tipo berro o wasabi suave",
@@ -223,7 +223,7 @@ const PRODUCT_DETAILS = {
     ]
   },
   "Claveles Japoneses": {
-    "image": null,
+    "image": "assets/flores/clavel-japones.jpg",
     "description": "De petalos delicados y aroma dulce con notas de clavo de olor, los claveles japoneses son un clasico en la decoracion de tortas y bebidas de autor. Su sabor sutilmente especiado combina bien con preparaciones dulces y saladas.",
     "benefits": [
       "Aroma dulce con notas de clavo de olor",
@@ -233,7 +233,7 @@ const PRODUCT_DETAILS = {
     ]
   },
   "Mini Clavel": {
-    "image": null,
+    "image": "assets/flores/mini-clavel.jpg",
     "description": "Version miniatura del clavel clasico, con petalos tiernos y un sabor dulce-especiado sin el amargor de la base blanca de la flor completa. Un giro elegante para platos de autor y reposteria de alta gama.",
     "benefits": [
       "Formato mini sin la base amarga",
