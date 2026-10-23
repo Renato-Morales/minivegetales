@@ -8,6 +8,7 @@
   --lime-soft: #6fe84f;
   --violet: #9b6bff;
   --cyan: #4defd0;
+  --pink: #ff6ec4;
   --text: #eef5ee;
   --text-dim: #9fb3a9;
   --radius: 18px;
@@ -39,6 +40,10 @@ img { max-width: 100%; display: block; }
   color: var(--lime);
   text-shadow: 0 0 18px rgba(166, 255, 77, 0.55), 0 0 50px rgba(111, 232, 79, 0.25);
 }
+.glow-text-pink {
+  color: var(--pink);
+  text-shadow: 0 0 18px rgba(255, 110, 196, 0.55), 0 0 50px rgba(255, 110, 196, 0.25);
+}
 
 .tag {
   display: inline-block;
@@ -49,6 +54,7 @@ img { max-width: 100%; display: block; }
   text-transform: uppercase;
   margin-bottom: 10px;
 }
+.tag-pink { color: var(--pink); }
 
 #fx-canvas {
   position: fixed;
@@ -201,6 +207,12 @@ img { max-width: 100%; display: block; }
   border-radius: 999px;
   background: var(--panel);
 }
+.badge-new {
+  color: var(--pink);
+  border-color: rgba(255, 110, 196, 0.4);
+  background: rgba(255, 110, 196, 0.08);
+  box-shadow: 0 0 14px rgba(255, 110, 196, 0.25);
+}
 
 .scroll-cue {
   position: absolute;
@@ -282,7 +294,14 @@ img { max-width: 100%; display: block; }
   animation: marquee 38s linear infinite;
 }
 .marquee:hover .marquee-track { animation-play-state: paused; }
+.marquee-reverse .marquee-track { animation-direction: reverse; }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+.flowers-section {
+  background: radial-gradient(ellipse at 50% 0%, rgba(255, 110, 196, 0.08), transparent 60%), var(--bg-soft);
+}
+.flowers-section .variety-chip { border-color: rgba(255, 110, 196, 0.18); }
+.flowers-section .variety-chip:hover { border-color: rgba(255, 110, 196, 0.5); }
 
 .variety-chip {
   flex: 0 0 auto;

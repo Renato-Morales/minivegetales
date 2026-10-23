@@ -70,15 +70,33 @@ const VARIEDADES = [
   { name: "Albahaca", color: "#4de1a6" },
 ];
 
-const track = document.getElementById("marqueeTrack");
+// Flores comestibles de temporada -- catalogo limitado, disponibilidad estacional
+const FLORES = [
+  { name: "Pensamientos", color: "#9b6bff" },
+  { name: "Mini Violas", color: "#8a4fff" },
+  { name: "Calendulas", color: "#ffcc33" },
+  { name: "Capuchinas", color: "#ff7a45" },
+  { name: "Claveles Japoneses", color: "#ff6ec4" },
+  { name: "Mini Clavel", color: "#ff4d8d" },
+  { name: "Gypsophillas", color: "#f3e8ff" },
+];
+
 function chip(v) {
   const el = document.createElement("div");
   el.className = "variety-chip";
   el.innerHTML = `<span class="swatch" style="background:${v.color}; box-shadow:0 0 8px ${v.color}"></span>${v.name}`;
   return el;
 }
-// duplicate the list so the CSS marquee (translateX -50%) loops seamlessly
-[...VARIEDADES, ...VARIEDADES].forEach((v) => track.appendChild(chip(v)));
+
+// duplicate each list so the CSS marquee (translateX -50%) loops seamlessly
+function renderMarquee(trackId, items) {
+  const track = document.getElementById(trackId);
+  if (!track) return;
+  [...items, ...items].forEach((v) => track.appendChild(chip(v)));
+}
+
+renderMarquee("marqueeTrack", VARIEDADES);
+renderMarquee("marqueeTrackFlores", FLORES);
 
 // ---- Navbar background on scroll ----
 const navbar = document.getElementById("navbar");
