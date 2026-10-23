@@ -7,7 +7,9 @@
   <meta name="description" content="Granja vertical urbana en La Reina, Santiago. Microgreens frescos, sostenibles y cultivados sin pesticidas, entregados el mismo dia a hogares, restaurantes y empresas.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <!-- cache-busting: bump ?v= whenever styles.css/script.js/products-data.js change,
+       to defeat aggressive mobile carrier/proxy caching (e.g. Chrome Android Data Saver) -->
+  <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
 
@@ -292,7 +294,7 @@
     </div>
   </div>
 
-  <script src="products-data.js"></script>
-  <script src="script.js"></script>
+  <script src="products-data.js?v=2"></script>
+  <script src="script.js?v=2"></script>
 </body>
 </html>
