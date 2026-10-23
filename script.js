@@ -81,10 +81,65 @@ const FLORES = [
   { name: "Gypsophillas", color: "#f3e8ff" },
 ];
 
+// ---- Product detail modal ----
+const modalOverlay = document.getElementById("productModal");
+const modalMedia = document.getElementById("modalMedia");
+const modalTitle = document.getElementById("modalTitle");
+const modalDescription = document.getElementById("modalDescription");
+const modalBenefits = document.getElementById("modalBenefits");
+const modalCta = document.getElementById("modalCta");
+const modalClose = document.getElementById("modalClose");
+let lastFocusedChip = null;
+
+function openProductModal(item) {
+  const details = PRODUCT_DETAILS[item.name] || {};
+
+  modalTitle.textContent = item.name;
+  modalDescription.textContent =
+    details.description || "Pronto vamos a sumar el detalle completo de este producto.";
+
+  modalBenefits.innerHTML = "";
+  (details.benefits || []).forEach((benefit) => {
+    const li = document.createElement("li");
+    li.textContent = benefit;
+    modalBenefits.appendChild(li);
+  });
+
+  modalMedia.innerHTML = details.image
+    ? `<img src="${details.image}" alt="${item.name}" loading="lazy">`
+    : `<span class="modal-media-fallback" style="background:${item.color}; color:${item.color}"></span>`;
+
+  const message = encodeURIComponent(`Hola Mini Vegetales, quiero consultar por ${item.name}`);
+  modalCta.href = `https://wa.me/56979886031?text=${message}`;
+
+  modalOverlay.hidden = false;
+  document.body.style.overflow = "hidden";
+  modalClose.focus();
+}
+
+function closeProductModal() {
+  modalOverlay.hidden = true;
+  document.body.style.overflow = "";
+  if (lastFocusedChip) lastFocusedChip.focus();
+}
+
+modalClose.addEventListener("click", closeProductModal);
+modalOverlay.addEventListener("click", (event) => {
+  if (event.target === modalOverlay) closeProductModal();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !modalOverlay.hidden) closeProductModal();
+});
+
 function chip(v) {
-  const el = document.createElement("div");
+  const el = document.createElement("button");
+  el.type = "button";
   el.className = "variety-chip";
-  el.innerHTML = `<span class="swatch" style="background:${v.color}; box-shadow:0 0 8px ${v.color}"></span>${v.name}`;
+  el.innerHTML = `<span class="swatch" style="background:${v.color}; box-shadow:0 0 8px ${v.color}"></span>${v.name}<span class="chip-hint">+</span>`;
+  el.addEventListener("click", () => {
+    lastFocusedChip = el;
+    openProductModal(v);
+  });
   return el;
 }
 
