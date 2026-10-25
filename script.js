@@ -1,9 +1,13 @@
-// ===== Mini Vegetales landing — interactions =====
+// ===== Mini Vegetales — interacciones =====
+// Datos de producto en PRODUCT_DETAILS (products-data.js). El catálogo ya viene escrito en
+// index.html: este script solo agrega filtros, pedido, diálogos y animaciones.
+const WHATSAPP = "56979886031";
+const STORAGE_KEY = "mv-pedido";
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
-// ---- Mobile menu toggle ----
+// ---------- Menú móvil ----------
 const burger = document.getElementById("burger");
 const navLinks = document.getElementById("navLinks");
 function setMenu(open) {
@@ -12,19 +16,16 @@ function setMenu(open) {
   burger.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
 }
 burger.addEventListener("click", () => setMenu(!navLinks.classList.contains("is-open")));
-navLinks.querySelectorAll("a").forEach((link) => {
-  link.addEventListener("click", () => setMenu(false));
-});
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && navLinks.classList.contains("is-open")) {
+navLinks.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && navLinks.classList.contains("is-open")) {
     setMenu(false);
     burger.focus();
   }
 });
 
-// ---- Scroll reveal ----
-// El CSS solo oculta [data-reveal] cuando <html> tiene la clase "js"; si algo falla
-// aquí, todo se muestra igual (ver el bloque try/catch y el fallback de abajo).
+// ---------- Aparición al hacer scroll ----------
+// El CSS solo oculta [data-reveal] si <html> tiene la clase "js"; si algo falla, se muestra todo.
 const revealEls = document.querySelectorAll("[data-reveal]");
 function showAll() {
   revealEls.forEach((el) => el.classList.add("is-visible"));
@@ -33,196 +34,245 @@ try {
   if (prefersReducedMotion || !("IntersectionObserver" in window)) {
     showAll();
   } else {
-    const revealObserver = new IntersectionObserver(
+    const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("is-visible");
-            revealObserver.unobserve(entry.target);
+            io.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.12 }
     );
-    revealEls.forEach((el) => revealObserver.observe(el));
+    revealEls.forEach((el) => io.observe(el));
   }
 } catch (err) {
   showAll();
 }
 
-// ---- Animated stat counters (el HTML ya trae el valor final; esto solo lo anima) ----
-const counters = document.querySelectorAll("[data-count]");
-if (!prefersReducedMotion && "IntersectionObserver" in window) {
-  const counterObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const el = entry.target;
-        const target = parseInt(el.dataset.count, 10);
-        const suffix = el.dataset.suffix || "";
-        const duration = 1200;
-        const start = performance.now();
-        function tick(now) {
-          const progress = Math.min((now - start) / duration, 1);
-          el.textContent = Math.floor(progress * target) + suffix;
-          if (progress < 1) requestAnimationFrame(tick);
-          else el.textContent = target + suffix;
-        }
-        requestAnimationFrame(tick);
-        counterObserver.unobserve(el);
-      });
-    },
-    { threshold: 0.5 }
-  );
-  counters.forEach((el) => counterObserver.observe(el));
+// ---------- Utilidades ----------
+function labelOf(key) {
+  const d = PRODUCT_DETAILS[key];
+  return (d && d.label) || key;
+}
+function waLink(text) {
+  return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`;
+}
+// Dentro de un <dialog> modal, clic en el fondo = cerrar (respaldo para navegadores sin `closedby`)
+function enableLightDismiss(dialog) {
+  if ("closedBy" in HTMLDialogElement.prototype) return;
+  dialog.addEventListener("click", (event) => {
+    if (event.target !== dialog) return;
+    const r = dialog.getBoundingClientRect();
+    const inside =
+      r.top <= event.clientY && event.clientY <= r.bottom &&
+      r.left <= event.clientX && event.clientX <= r.right;
+    if (!inside) dialog.close();
+  });
+}
+function wireClose(dialog) {
+  dialog.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", () => dialog.close()));
+  enableLightDismiss(dialog);
 }
 
-// ---- Product detail modal ----
-// Las tarjetas del catálogo ya vienen en el HTML (botones .product-card con data-product);
-// aquí solo se les conecta el modal. Datos en PRODUCT_DETAILS (products-data.js).
-const modalOverlay = document.getElementById("productModal");
-const modalMedia = document.getElementById("modalMedia");
-const modalTitle = document.getElementById("modalTitle");
-const modalDescription = document.getElementById("modalDescription");
-const modalBenefits = document.getElementById("modalBenefits");
-const modalCta = document.getElementById("modalCta");
-const modalClose = document.getElementById("modalClose");
-let lastFocusedCard = null;
+// ---------- Estado del pedido ----------
+// Map clave -> tipo ("micro" | "flor"). Se guarda en localStorage solo como comodidad
+// (si falla o está bloqueado, el pedido sigue funcionando en memoria).
+const order = new Map();
+const knownKeys = new Map();
+document.querySelectorAll("[data-add]").forEach((btn) => knownKeys.set(btn.dataset.add, btn.dataset.kind));
 
-function openProductModal(key, card) {
-  const details = PRODUCT_DETAILS[key] || {};
-  const label = details.label || key;
+try {
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  saved.forEach((key) => { if (knownKeys.has(key)) order.set(key, knownKeys.get(key)); });
+} catch (err) { /* sin almacenamiento: seguimos en memoria */ }
 
-  modalTitle.textContent = label;
-  modalDescription.textContent =
-    details.description || "Pronto vamos a sumar el detalle completo de este producto.";
+const orderBar = document.getElementById("orderBar");
+const orderBarText = document.getElementById("orderBarText");
+const orderBarWhatsapp = document.getElementById("orderBarWhatsapp");
+const orderBarReview = document.getElementById("orderBarReview");
+const orderStatus = document.getElementById("orderStatus");
+const orderDialog = document.getElementById("orderDialog");
+const orderGroups = document.getElementById("orderGroups");
+const orderEmpty = document.getElementById("orderEmpty");
+const orderNotes = document.getElementById("orderNotes");
+const orderSend = document.getElementById("orderSend");
+const orderClear = document.getElementById("orderClear");
 
-  modalBenefits.innerHTML = "";
-  (details.uses || []).forEach((use) => {
+function orderMessage() {
+  const lines = ["Hola Mini Vegetales, quiero cotizar este pedido:"];
+  const micro = [...order].filter(([, kind]) => kind === "micro").map(([k]) => labelOf(k));
+  const flores = [...order].filter(([, kind]) => kind === "flor").map(([k]) => labelOf(k));
+  if (micro.length) lines.push("", "Microvegetales:", ...micro.map((n) => `- ${n}`));
+  if (flores.length) lines.push("", "Flores de temporada:", ...flores.map((n) => `- ${n}`));
+  const notes = orderNotes.value.trim();
+  if (notes) lines.push("", `Notas: ${notes}`);
+  return lines.join("\n");
+}
+
+function renderOrder(announce) {
+  const count = order.size;
+
+  // Botones "Agregar" de las tarjetas y del diálogo de producto
+  document.querySelectorAll("[data-add]").forEach((btn) => {
+    btn.setAttribute("aria-pressed", String(order.has(btn.dataset.add)));
+  });
+  syncProductAddButton();
+
+  // Barra inferior: vacía -> WhatsApp directo; con productos -> revisar y enviar
+  orderBar.classList.toggle("has-items", count > 0);
+  orderBarWhatsapp.hidden = count > 0;
+  orderBarReview.hidden = count === 0;
+  orderBarText.textContent = count === 0 ? "¿Hablamos?" : count === 1 ? "1 producto en tu pedido" : `${count} productos en tu pedido`;
+
+  // Lista dentro del diálogo de pedido
+  orderGroups.innerHTML = "";
+  [["micro", "Microvegetales"], ["flor", "Flores de temporada"]].forEach(([kind, title]) => {
+    const items = [...order].filter(([, k]) => k === kind).map(([key]) => key);
+    if (!items.length) return;
+    const group = document.createElement("div");
+    group.className = "order-group";
+    const h = document.createElement("h4");
+    h.textContent = title;
+    group.appendChild(h);
+    const ul = document.createElement("ul");
+    items.forEach((key) => {
+      const li = document.createElement("li");
+      li.className = "order-item";
+      const name = document.createElement("span");
+      name.textContent = labelOf(key);
+      const rm = document.createElement("button");
+      rm.type = "button";
+      rm.className = "order-remove";
+      rm.textContent = "Quitar";
+      rm.setAttribute("aria-label", `Quitar ${labelOf(key)} del pedido`);
+      rm.addEventListener("click", () => {
+        toggleOrder(key);
+        if (!order.size) orderDialog.close();
+      });
+      li.append(name, rm);
+      ul.appendChild(li);
+    });
+    group.appendChild(ul);
+    orderGroups.appendChild(group);
+  });
+  orderEmpty.hidden = count > 0;
+  orderSend.hidden = count === 0;
+  orderClear.hidden = count === 0;
+  orderSend.href = count ? waLink(orderMessage()) : `https://wa.me/${WHATSAPP}`;
+
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...order.keys()])); } catch (err) { /* ok */ }
+  if (announce) orderStatus.textContent = announce;
+}
+
+function toggleOrder(key) {
+  const kind = knownKeys.get(key);
+  if (!kind) return;
+  const had = order.has(key);
+  if (had) order.delete(key); else order.set(key, kind);
+  const n = order.size;
+  const total = n === 1 ? "1 producto en tu pedido" : `${n} productos en tu pedido`;
+  renderOrder(`${labelOf(key)} ${had ? "quitado del" : "agregado al"} pedido. ${total}.`);
+}
+
+document.querySelectorAll("[data-add]").forEach((btn) => {
+  btn.addEventListener("click", () => toggleOrder(btn.dataset.add));
+});
+orderBarReview.addEventListener("click", () => orderDialog.showModal());
+orderNotes.addEventListener("input", () => { if (order.size) orderSend.href = waLink(orderMessage()); });
+orderClear.addEventListener("click", () => {
+  order.clear();
+  renderOrder("Pedido vaciado.");
+  orderDialog.close();
+});
+wireClose(orderDialog);
+
+// ---------- Diálogo de producto ----------
+const productDialog = document.getElementById("productDialog");
+const productMedia = document.getElementById("productMedia");
+const productKind = document.getElementById("productKind");
+const productTitle = document.getElementById("productTitle");
+const productFlavor = document.getElementById("productFlavor");
+const productDescription = document.getElementById("productDescription");
+const productUsesWrap = document.getElementById("productUsesWrap");
+const productUses = document.getElementById("productUses");
+const productAdd = document.getElementById("productAdd");
+const productWhatsapp = document.getElementById("productWhatsapp");
+let currentKey = null;
+
+function syncProductAddButton() {
+  if (!currentKey) return;
+  const inOrder = order.has(currentKey);
+  productAdd.setAttribute("aria-pressed", String(inOrder));
+  productAdd.textContent = inOrder ? "En tu pedido (quitar)" : "Agregar al pedido";
+}
+
+function openProduct(btn) {
+  const key = btn.dataset.product;
+  const d = PRODUCT_DETAILS[key] || {};
+  const label = d.label || key;
+  currentKey = key;
+
+  productKind.textContent = btn.dataset.kind === "flor" ? "Flor comestible de temporada" : "Microvegetal";
+  productTitle.textContent = label;
+  const flavor = btn.querySelector(".product-flavor");
+  productFlavor.textContent = flavor ? flavor.textContent : "";
+  productDescription.textContent = d.description || "Pronto vamos a sumar el detalle completo de este producto.";
+
+  productUses.innerHTML = "";
+  (d.uses || []).forEach((use) => {
     const li = document.createElement("li");
     li.textContent = use;
-    modalBenefits.appendChild(li);
+    productUses.appendChild(li);
   });
-  modalBenefits.previousElementSibling.hidden = !(details.uses && details.uses.length);
+  productUsesWrap.hidden = !(d.uses && d.uses.length);
 
-  modalMedia.innerHTML = "";
-  if (details.image) {
+  productMedia.innerHTML = "";
+  if (d.image) {
     const img = document.createElement("img");
-    img.src = details.image;
+    img.src = d.image;
     img.alt = label;
-    modalMedia.appendChild(img);
+    productMedia.appendChild(img);
   } else {
-    const swatch = card.querySelector(".product-media-empty");
-    const color = swatch ? getComputedStyle(swatch).getPropertyValue("--swatch").trim() : "#a6ff4d";
-    const dot = document.createElement("span");
-    dot.className = "modal-media-fallback";
-    dot.style.background = color;
-    dot.style.color = color;
-    modalMedia.appendChild(dot);
+    const swatch = btn.querySelector(".product-media-empty");
+    const fill = document.createElement("div");
+    fill.className = "media-fill";
+    if (swatch) fill.style.setProperty("--swatch", swatch.style.getPropertyValue("--swatch"));
+    const note = document.createElement("span");
+    note.className = "media-note";
+    note.textContent = "Foto próximamente";
+    fill.appendChild(note);
+    productMedia.appendChild(fill);
   }
 
-  const message = encodeURIComponent(`Hola Mini Vegetales, quiero consultar por ${label}`);
-  modalCta.href = `https://wa.me/56979886031?text=${message}`;
-
-  modalOverlay.hidden = false;
-  document.body.style.overflow = "hidden";
-  modalClose.focus();
+  productWhatsapp.href = waLink(`Hola Mini Vegetales, quiero consultar por ${label}`);
+  syncProductAddButton();
+  productDialog.showModal();
 }
 
-function closeProductModal() {
-  modalOverlay.hidden = true;
-  document.body.style.overflow = "";
-  if (lastFocusedCard) lastFocusedCard.focus();
-}
+document.querySelectorAll(".product-open").forEach((btn) => btn.addEventListener("click", () => openProduct(btn)));
+productAdd.addEventListener("click", () => { if (currentKey) toggleOrder(currentKey); });
+productDialog.addEventListener("close", () => { currentKey = null; });
+wireClose(productDialog);
 
-modalClose.addEventListener("click", closeProductModal);
-modalOverlay.addEventListener("click", (event) => {
-  if (event.target === modalOverlay) closeProductModal();
-});
-document.addEventListener("keydown", (event) => {
-  if (modalOverlay.hidden) return;
-  if (event.key === "Escape") {
-    closeProductModal();
-    return;
-  }
-  // Mantener el foco dentro del modal mientras está abierto
-  if (event.key === "Tab") {
-    const focusables = modalOverlay.querySelectorAll("a[href], button:not([disabled])");
-    if (!focusables.length) return;
-    const first = focusables[0];
-    const last = focusables[focusables.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
-  }
-});
-
-document.querySelectorAll(".product-card").forEach((card) => {
-  card.addEventListener("click", () => {
-    lastFocusedCard = card;
-    openProductModal(card.dataset.product, card);
+// ---------- Filtro por sabor ----------
+const chips = document.querySelectorAll(".chip");
+const microCards = document.querySelectorAll("#microGrid .product");
+const filterStatus = document.getElementById("filterStatus");
+chips.forEach((chip) => {
+  chip.addEventListener("click", () => {
+    const f = chip.dataset.filter;
+    chips.forEach((c) => c.setAttribute("aria-pressed", String(c === chip)));
+    let shown = 0;
+    microCards.forEach((card) => {
+      const match = f === "todos" || (card.dataset.tags || "").split(" ").includes(f);
+      card.hidden = !match;
+      if (match) shown += 1;
+    });
+    filterStatus.textContent =
+      f === "todos" ? `Mostrando las ${shown} variedades` : `Mostrando ${shown} variedades de sabor ${f}`;
   });
 });
 
-// ---- Navbar background on scroll ----
-const navbar = document.getElementById("navbar");
-window.addEventListener("scroll", () => {
-  navbar.style.background = window.scrollY > 40
-    ? "rgba(6, 10, 8, 0.85)"
-    : "rgba(6, 10, 8, 0.55)";
-}, { passive: true });
-
-// ---- Ambient particle canvas (lightweight, pure vanilla) ----
-const canvas = document.getElementById("fx-canvas");
-const ctx = canvas.getContext("2d");
-let particles = [];
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-
-function initParticles() {
-  const count = Math.min(70, Math.floor(window.innerWidth / 18));
-  particles = Array.from({ length: count }, () => ({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    r: Math.random() * 1.8 + 0.4,
-    vy: Math.random() * 0.25 + 0.05,
-    vx: (Math.random() - 0.5) * 0.15,
-    alpha: Math.random() * 0.5 + 0.2,
-  }));
-}
-
-function drawParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach((p) => {
-    p.y -= p.vy;
-    p.x += p.vx;
-    if (p.y < -10) p.y = canvas.height + 10;
-    if (p.x < -10) p.x = canvas.width + 10;
-    if (p.x > canvas.width + 10) p.x = -10;
-
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(166, 255, 77, ${p.alpha})`;
-    ctx.shadowColor = "rgba(166, 255, 77, 0.8)";
-    ctx.shadowBlur = 6;
-    ctx.fill();
-  });
-  requestAnimationFrame(drawParticles);
-}
-
-if (!prefersReducedMotion) {
-  resizeCanvas();
-  initParticles();
-  drawParticles();
-  window.addEventListener("resize", () => {
-    resizeCanvas();
-    initParticles();
-  });
-}
+renderOrder();

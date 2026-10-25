@@ -3,224 +3,427 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mini Vegetales · Microgreens y flores comestibles, cosechados hoy en Santiago</title>
-  <meta name="description" content="Granja vertical urbana en La Reina, Santiago. Microgreens y flores comestibles cultivados sin pesticidas, cosechados y entregados el mismo día a restaurantes, hoteles, cafeterías y hogares.">
-  <!-- Marca la página como "con JS" ANTES de pintar, para que los efectos de aparición
-       solo oculten contenido si el script realmente va a poder mostrarlo después. -->
+  <title>Mini Vegetales · Microvegetales y flores comestibles frescos en Santiago</title>
+  <meta name="description" content="Granja vertical en La Reina, Santiago. Microvegetales (microgreens) y flores comestibles de temporada, cosechados y entregados el mismo día a restaurantes, hoteles, cafeterías y hogares. Arma tu pedido y envíalo por WhatsApp.">
+  <meta name="theme-color" content="#123524">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_CL">
+  <meta property="og:title" content="Mini Vegetales · Microvegetales y flores comestibles">
+  <meta property="og:description" content="Cosechados hoy en La Reina y entregados en Santiago. Arma tu pedido y envíalo por WhatsApp.">
+  <meta property="og:image" content="https://minivegetales.pages.dev/assets/hero-farm.jpg">
+  <!-- Marca la página como "con JS" ANTES de pintar: los efectos de aparición solo ocultan
+       contenido si el script realmente va a poder mostrarlo después. -->
   <script>document.documentElement.classList.add("js");</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <!-- cache-busting: bump ?v= whenever styles.css/script.js/products-data.js change,
-       to defeat aggressive mobile carrier/proxy caching (e.g. Chrome Android Data Saver) -->
-  <link rel="stylesheet" href="styles.css?v=7">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Gloock&display=swap" rel="stylesheet">
+  <!-- cache-busting: subir ?v= cada vez que cambie styles.css / script.js / products-data.js -->
+  <link rel="stylesheet" href="styles.css?v=8">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Mini Vegetales",
+    "description": "Granja vertical urbana de microvegetales y flores comestibles en La Reina, Santiago.",
+    "url": "https://minivegetales.pages.dev/",
+    "telephone": "+56979886031",
+    "email": "info@minivegetales.cl",
+    "image": "https://minivegetales.pages.dev/assets/hero-farm.jpg",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Av. Alcalde Fernando Castillo Velasco 6989",
+      "addressLocality": "La Reina",
+      "addressRegion": "Región Metropolitana",
+      "addressCountry": "CL"
+    },
+    "sameAs": [
+      "https://www.instagram.com/minivegetales/",
+      "https://www.facebook.com/Minivegetales-264967574153004/",
+      "https://www.linkedin.com/company/minivegetales/"
+    ]
+  }
+  </script>
 </head>
 <body>
 
-  <canvas id="fx-canvas" aria-hidden="true"></canvas>
+  <a class="skip-link" href="#catalogo">Saltar al catálogo</a>
 
-  <header class="navbar" id="navbar">
-    <div class="nav-inner">
-      <a href="#inicio" class="logo">Mini <span>Vegetales</span><i class="dot"></i></a>
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="#inicio" class="logo" aria-label="Mini Vegetales, inicio">Mini Vegetales<i class="logo-dot" aria-hidden="true"></i></a>
       <nav class="nav-links" id="navLinks" aria-label="Principal">
-        <a href="#variedades">Variedades</a>
+        <a href="#variedades">Microvegetales</a>
         <a href="#flores">Flores</a>
         <a href="#chefs">Para chefs</a>
-        <a href="#que-son">El proyecto</a>
+        <a href="#proyecto">La granja</a>
+        <a href="#preguntas">Preguntas</a>
         <a href="#contacto">Contacto</a>
       </nav>
-      <a href="https://wa.me/56979886031?text=Hola%20Mini%20Vegetales%2C%20quiero%20pedir%20una%20muestra%20de%20microgreens"
-         class="btn btn-primary nav-cta" target="_blank" rel="noopener">Escríbenos</a>
+      <a href="https://wa.me/56979886031?text=Hola%20Mini%20Vegetales%2C%20quiero%20pedir%20una%20muestra"
+         class="btn btn-gold btn-sm nav-cta" target="_blank" rel="noopener">Pedir por WhatsApp</a>
       <button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
     </div>
   </header>
 
-  <main>
+  <main id="contenido">
+
     <!-- HERO -->
-    <section class="hero" id="inicio" style="background-image: url('assets/hero-farm.jpg');">
-      <div class="hero-overlay"></div>
-      <div class="hero-grid"></div>
-      <div class="container hero-content" data-reveal>
-        <span class="eyebrow">
-          <svg aria-hidden="true" focusable="false" class="icon-inline" viewBox="0 0 24 24"><path d="M12 2v6M12 16v6M2 12h6M16 12h6"/></svg>
-          Granja vertical urbana &middot; La Reina, Santiago
-        </span>
-        <h1>Microgreens y flores comestibles, <span class="glow-text">cosechados hoy</span>.</h1>
-        <p class="hero-sub">Cultivados en vertical, sin tierra y sin pesticidas, y entregados en Santiago el mismo día de la cosecha.
-          Sabor, color y textura para tu próximo servicio.</p>
-        <div class="hero-ctas">
-          <a href="https://wa.me/56979886031?text=Hola%20Mini%20Vegetales%2C%20quiero%20pedir%20una%20muestra%20de%20microgreens"
-             class="btn btn-primary btn-lg" target="_blank" rel="noopener">Pide tu muestra</a>
-          <a href="#variedades" class="btn btn-ghost btn-lg">Ver variedades</a>
+    <section class="hero" id="inicio">
+      <div class="container hero-grid">
+        <div class="hero-copy" data-reveal>
+          <p class="eyebrow">Granja vertical · La Reina, Santiago</p>
+          <h1>Microvegetales y flores comestibles, <span class="accent">cosechados hoy</span>.</h1>
+          <p class="hero-sub">Sabor, color y textura para tu próximo servicio. Cultivados en vertical, sin tierra y sin pesticidas, y entregados en Santiago el mismo día de la cosecha.</p>
+          <div class="hero-ctas">
+            <a href="#catalogo" class="btn btn-gold btn-lg">Armar mi pedido</a>
+            <a href="https://wa.me/56979886031?text=Hola%20Mini%20Vegetales%2C%20tengo%20un%20negocio%20y%20quiero%20pedir%20una%20muestra"
+               class="btn btn-outline-light btn-lg" target="_blank" rel="noopener">Pedir una muestra</a>
+          </div>
+          <ul class="hero-trust" aria-label="Por qué Mini Vegetales">
+            <li>Sin pesticidas</li>
+            <li>Cosecha todos los días</li>
+            <li>Directo del productor</li>
+          </ul>
         </div>
-        <div class="hero-badges">
-          <span class="badge">Sin pesticidas</span>
-          <span class="badge">100&nbsp;% vertical</span>
-          <span class="badge">Cosecha diaria</span>
-          <span class="badge badge-new">Nuevo: flores de temporada</span>
+        <div class="hero-visual" data-reveal>
+          <img class="hero-photo" src="assets/hero-farm.jpg" alt="Estantes de la granja vertical de Mini Vegetales con microvegetales creciendo bajo luz LED" width="1672" height="941" fetchpriority="high">
+          <img class="hero-bubble hero-bubble-1" src="assets/variedades/micro-pousse-amarante-amaranth-x2.jpg" alt="" width="400" height="400">
+          <img class="hero-bubble hero-bubble-2" src="assets/flores/calendula.jpg" alt="" width="439" height="315">
         </div>
-      </div>
-      <a href="#variedades" class="scroll-cue" aria-label="Bajar al catálogo">
-        <span></span>
-      </a>
-    </section>
-
-    <!-- STATS -->
-    <section class="stats" aria-label="Mini Vegetales en cifras">
-      <div class="container stats-grid" data-reveal>
-        <div class="stat"><strong data-count="15">15</strong><small>Variedades de microgreens</small></div>
-        <div class="stat"><strong data-count="7">7</strong><small>Flores comestibles de temporada</small></div>
-        <div class="stat"><strong data-count="365">365</strong><small>Días de cosecha al año</small></div>
-        <div class="stat"><strong data-count="100" data-suffix="%">100%</strong><small>Producción vertical, sin pesticidas</small></div>
       </div>
     </section>
 
-    <!-- VARIEDADES -->
-    <section class="section section-dark" id="variedades">
+    <!-- CIFRAS -->
+    <section class="numbers" aria-label="Mini Vegetales en cifras">
+      <div class="container numbers-grid">
+        <p class="number"><strong>15</strong><span>variedades de microvegetales</span></p>
+        <p class="number"><strong>7</strong><span>flores comestibles de temporada</span></p>
+        <p class="number"><strong>365</strong><span>días de cosecha al año</span></p>
+        <p class="number"><strong>100&nbsp;%</strong><span>producción vertical, sin pesticidas</span></p>
+      </div>
+    </section>
+
+    <!-- PARA QUIÉN -->
+    <section class="audience" aria-label="Para quién cultivamos">
       <div class="container">
-        <div class="section-head" data-reveal>
-          <span class="tag">// el catálogo</span>
-          <h2>Un mundo de sabor en <span class="glow-text">miniatura</span></h2>
-          <p class="section-sub">15 variedades para elevar cualquier plato. Toca una para ver cómo se usa y pedirla
-            directo por WhatsApp, sin carrito ni vueltas.</p>
+        <p class="audience-lead">Cultivamos para</p>
+        <ul class="audience-list">
+          <li>Restaurantes</li>
+          <li>Hoteles</li>
+          <li>Cafeterías</li>
+          <li>Empresas de alimentos</li>
+          <li>Hogares</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CATÁLOGO · MICROVEGETALES -->
+    <section class="section" id="catalogo">
+      <div class="container">
+        <div class="section-head" id="variedades" data-reveal>
+          <p class="label">El catálogo</p>
+          <h2>Microvegetales para cada plato</h2>
+          <p class="section-sub">Elige por sabor, toca una variedad para ver cómo se usa y agrégala a tu pedido. Sin carrito ni registro: al final lo envías por WhatsApp y coordinamos formato, volumen y fecha.</p>
         </div>
-        <div class="catalog-grid" data-reveal>
-          <button type="button" class="product-card" data-product="Amaranto"><span class="product-media"><img src="assets/variedades/micro-pousse-amarante-amaranth-x2.jpg" alt="" width="400" height="400" loading="lazy"></span><span class="product-name">Amaranto</span></button>
-          <button type="button" class="product-card" data-product="Rucula"><span class="product-media"><img src="assets/variedades/micro-pousse-arugula.jpg" alt="" width="400" height="400" loading="lazy"></span><span class="product-name">Rúcula</span></button>
-          <button type="button" class="product-card" data-product="Betarraga"><span class="product-media"><img src="assets/variedades/micro-pousse-betterave-beet.jpg" alt="" width="400" height="400" loading="lazy"></span><span class="product-name">Betarraga</span></button>
-          <button type="button" class="product-card" data-product="Mostaza Amarilla-Negra"><span class="product-media"><img src="assets/variedades/micro-pousse-moutarde-mustard.jpg" alt="" width="400" height="400" loading="lazy"></span><span class="product-name">Mostaza amarilla-negra</span></button>
-          <button type="button" class="product-card" data-product="Maiz Dulce"><span class="product-media"><img src="assets/variedades/micro-pousse-mais-corn.jpg" alt="" width="400" height="400" loading="lazy"></span><span class="product-name">Maíz dulce</span></button>
-          <button type="button" class="product-card" data-product="Lentejas"><span class="product-media"><img src="assets/variedades/micro-pousse-lentilles-lentils.jpg" alt="" width="400" height="400" loading="lazy"></span><span class="product-name">Lentejas</span></button>
-          <button type="button" class="product-card" data-product="Repollo"><span class="product-media"><img src="assets/variedades/micro-pousse-chou-rouge-cabbage-red.jpg" alt="" width="400" height="400" loading="lazy"></span><span class="product-name">Repollo</span></button>
-          <button type="button" class="product-card" data-product="Rabano"><span class="product-media"><img src="assets/variedades/micro-pousse-radis-daikon-radish.jpg" alt="" width="400" height="400" loading="lazy"></span><span class="product-name">Rábano</span></button>
-          <button type="button" class="product-card" data-product="Arvejas"><span class="product-media"><img src="assets/variedades/micro-pousse-pois-peas.jpg" alt="" width="400" height="400" loading="lazy"></span><span class="product-name">Arvejas</span></button>
-          <button type="button" class="product-card" data-product="Cilantro"><span class="product-media"><img src="assets/variedades/cilantro.jpg" alt="" width="400" height="400" loading="lazy"></span><span class="product-name">Cilantro</span></button>
-          <button type="button" class="product-card" data-product="Acelga Roja"><span class="product-media product-media-empty" style="--swatch:#ff7676"></span><span class="product-name">Acelga roja</span></button>
-          <button type="button" class="product-card" data-product="Girasol"><span class="product-media"><img src="assets/variedades/micro-pousse-tournesol-sunflower.jpg" alt="" width="400" height="400" loading="lazy"></span><span class="product-name">Girasol</span></button>
-          <button type="button" class="product-card" data-product="Ajo Chino"><span class="product-media"><img src="assets/variedades/ajo.jpg" alt="" width="400" height="400" loading="lazy"></span><span class="product-name">Ajo chino</span></button>
-          <button type="button" class="product-card" data-product="Zanahoria"><span class="product-media"><img src="assets/variedades/Carrot-microgreens-tops.jpg" alt="" width="400" height="400" loading="lazy"></span><span class="product-name">Zanahoria</span></button>
-          <button type="button" class="product-card" data-product="Albahaca"><span class="product-media product-media-empty" style="--swatch:#4de1a6"></span><span class="product-name">Albahaca</span></button>
+
+        <div class="filters" role="group" aria-label="Filtrar por sabor">
+          <button type="button" class="chip" data-filter="todos" aria-pressed="true">Todos</button>
+          <button type="button" class="chip" data-filter="picante" aria-pressed="false">Picante</button>
+          <button type="button" class="chip" data-filter="dulce" aria-pressed="false">Dulce</button>
+          <button type="button" class="chip" data-filter="herbal" aria-pressed="false">Herbal</button>
+          <button type="button" class="chip" data-filter="suave" aria-pressed="false">Suave</button>
         </div>
+        <p class="filter-status" id="filterStatus" role="status" aria-live="polite">Mostrando las 15 variedades</p>
+
+        <ul class="product-grid" id="microGrid">
+          <li class="product" data-tags="dulce suave">
+            <button type="button" class="product-open" data-product="Amaranto" data-kind="micro">
+              <span class="product-media"><img src="assets/variedades/micro-pousse-amarante-amaranth-x2.jpg" alt="" width="400" height="400" loading="lazy"></span>
+              <span class="product-name">Amaranto</span>
+              <span class="product-flavor">Suave y dulce</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Amaranto" data-kind="micro" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Amaranto al pedido</span></button>
+          </li>
+          <li class="product" data-tags="picante">
+            <button type="button" class="product-open" data-product="Rucula" data-kind="micro">
+              <span class="product-media"><img src="assets/variedades/micro-pousse-arugula.jpg" alt="" width="400" height="400" loading="lazy"></span>
+              <span class="product-name">Rúcula</span>
+              <span class="product-flavor">Pimienta, fresca</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Rucula" data-kind="micro" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Rúcula al pedido</span></button>
+          </li>
+          <li class="product" data-tags="dulce">
+            <button type="button" class="product-open" data-product="Betarraga" data-kind="micro">
+              <span class="product-media"><img src="assets/variedades/micro-pousse-betterave-beet.jpg" alt="" width="400" height="400" loading="lazy"></span>
+              <span class="product-name">Betarraga</span>
+              <span class="product-flavor">Dulce y terrosa</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Betarraga" data-kind="micro" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Betarraga al pedido</span></button>
+          </li>
+          <li class="product" data-tags="picante">
+            <button type="button" class="product-open" data-product="Mostaza Amarilla-Negra" data-kind="micro">
+              <span class="product-media"><img src="assets/variedades/micro-pousse-moutarde-mustard.jpg" alt="" width="400" height="400" loading="lazy"></span>
+              <span class="product-name">Mostaza amarilla-negra</span>
+              <span class="product-flavor">Picor limpio</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Mostaza Amarilla-Negra" data-kind="micro" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Mostaza amarilla-negra al pedido</span></button>
+          </li>
+          <li class="product" data-tags="dulce">
+            <button type="button" class="product-open" data-product="Maiz Dulce" data-kind="micro">
+              <span class="product-media"><img src="assets/variedades/micro-pousse-mais-corn.jpg" alt="" width="400" height="400" loading="lazy"></span>
+              <span class="product-name">Maíz dulce</span>
+              <span class="product-flavor">Dulce y amable</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Maiz Dulce" data-kind="micro" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Maíz dulce al pedido</span></button>
+          </li>
+          <li class="product" data-tags="suave">
+            <button type="button" class="product-open" data-product="Lentejas" data-kind="micro">
+              <span class="product-media"><img src="assets/variedades/micro-pousse-lentilles-lentils.jpg" alt="" width="400" height="400" loading="lazy"></span>
+              <span class="product-name">Lentejas</span>
+              <span class="product-flavor">Suave, a legumbre</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Lentejas" data-kind="micro" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Lentejas al pedido</span></button>
+          </li>
+          <li class="product" data-tags="suave">
+            <button type="button" class="product-open" data-product="Repollo" data-kind="micro">
+              <span class="product-media"><img src="assets/variedades/micro-pousse-chou-rouge-cabbage-red.jpg" alt="" width="400" height="400" loading="lazy"></span>
+              <span class="product-name">Repollo</span>
+              <span class="product-flavor">Suave y crujiente</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Repollo" data-kind="micro" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Repollo al pedido</span></button>
+          </li>
+          <li class="product" data-tags="picante">
+            <button type="button" class="product-open" data-product="Rabano" data-kind="micro">
+              <span class="product-media"><img src="assets/variedades/micro-pousse-radis-daikon-radish.jpg" alt="" width="400" height="400" loading="lazy"></span>
+              <span class="product-name">Rábano</span>
+              <span class="product-flavor">Picante y crujiente</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Rabano" data-kind="micro" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Rábano al pedido</span></button>
+          </li>
+          <li class="product" data-tags="dulce">
+            <button type="button" class="product-open" data-product="Arvejas" data-kind="micro">
+              <span class="product-media"><img src="assets/variedades/micro-pousse-pois-peas.jpg" alt="" width="400" height="400" loading="lazy"></span>
+              <span class="product-name">Arvejas</span>
+              <span class="product-flavor">Dulce y fresca</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Arvejas" data-kind="micro" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Arvejas al pedido</span></button>
+          </li>
+          <li class="product" data-tags="herbal">
+            <button type="button" class="product-open" data-product="Cilantro" data-kind="micro">
+              <span class="product-media"><img src="assets/variedades/cilantro.jpg" alt="" width="400" height="400" loading="lazy"></span>
+              <span class="product-name">Cilantro</span>
+              <span class="product-flavor">Aromático</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Cilantro" data-kind="micro" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Cilantro al pedido</span></button>
+          </li>
+          <li class="product" data-tags="suave">
+            <button type="button" class="product-open" data-product="Acelga Roja" data-kind="micro">
+              <span class="product-media product-media-empty" style="--swatch:#C23A6B"><span class="media-note">Foto próximamente</span></span>
+              <span class="product-name">Acelga roja</span>
+              <span class="product-flavor">Suave y terrosa</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Acelga Roja" data-kind="micro" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Acelga roja al pedido</span></button>
+          </li>
+          <li class="product" data-tags="suave">
+            <button type="button" class="product-open" data-product="Girasol" data-kind="micro">
+              <span class="product-media"><img src="assets/variedades/micro-pousse-tournesol-sunflower.jpg" alt="" width="400" height="400" loading="lazy"></span>
+              <span class="product-name">Girasol</span>
+              <span class="product-flavor">Crocante, a nuez</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Girasol" data-kind="micro" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Girasol al pedido</span></button>
+          </li>
+          <li class="product" data-tags="herbal">
+            <button type="button" class="product-open" data-product="Ajo Chino" data-kind="micro">
+              <span class="product-media"><img src="assets/variedades/ajo.jpg" alt="" width="400" height="400" loading="lazy"></span>
+              <span class="product-name">Ajo chino</span>
+              <span class="product-flavor">Ajo suave, herbal</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Ajo Chino" data-kind="micro" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Ajo chino al pedido</span></button>
+          </li>
+          <li class="product" data-tags="dulce herbal">
+            <button type="button" class="product-open" data-product="Zanahoria" data-kind="micro">
+              <span class="product-media"><img src="assets/variedades/Carrot-microgreens-tops.jpg" alt="" width="400" height="400" loading="lazy"></span>
+              <span class="product-name">Zanahoria</span>
+              <span class="product-flavor">Dulce y herbal</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Zanahoria" data-kind="micro" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Zanahoria al pedido</span></button>
+          </li>
+          <li class="product" data-tags="herbal">
+            <button type="button" class="product-open" data-product="Albahaca" data-kind="micro">
+              <span class="product-media product-media-empty" style="--swatch:#4E9A52"><span class="media-note">Foto próximamente</span></span>
+              <span class="product-name">Albahaca</span>
+              <span class="product-flavor">Aromática</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Albahaca" data-kind="micro" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Albahaca al pedido</span></button>
+          </li>
+        </ul>
       </div>
     </section>
 
     <!-- FLORES DE TEMPORADA -->
-    <section class="section flowers-section" id="flores">
+    <section class="section section-flowers" id="flores">
       <div class="container">
         <div class="section-head" data-reveal>
-          <span class="tag tag-pink">// edición de temporada</span>
-          <h2>Flores comestibles <span class="glow-text-pink">de esta estación</span></h2>
-          <p class="section-sub">Cultivo limitado: estas variedades solo están disponibles esta temporada. Perfectas para decorar
-            y aromatizar cualquier plato, directo desde nuestra granja vertical.</p>
+          <p class="label label-rose">Edición de temporada</p>
+          <h2>Flores comestibles de esta estación</h2>
+          <p class="section-sub">Para decorar, aromatizar y dar el último toque a un plato o a un trago. Son de temporada: la disponibilidad cambia, así que agrega las que te interesan y te confirmamos qué hay esta semana.</p>
         </div>
-        <div class="catalog-grid catalog-grid-flowers" data-reveal>
-          <button type="button" class="product-card" data-product="Pensamientos"><span class="product-media product-media-empty" style="--swatch:#9b6bff"></span><span class="product-name">Pensamientos</span></button>
-          <button type="button" class="product-card" data-product="Mini Violas"><span class="product-media product-media-empty" style="--swatch:#8a4fff"></span><span class="product-name">Mini violas</span></button>
-          <button type="button" class="product-card" data-product="Calendulas"><span class="product-media"><img src="assets/flores/calendula.jpg" alt="" width="400" height="400" loading="lazy"></span><span class="product-name">Caléndulas</span></button>
-          <button type="button" class="product-card" data-product="Capuchinas"><span class="product-media"><img src="assets/flores/capuchina.jpg" alt="" width="400" height="400" loading="lazy"></span><span class="product-name">Capuchinas</span></button>
-          <button type="button" class="product-card" data-product="Claveles Japoneses"><span class="product-media"><img src="assets/flores/clavel-japones.jpg" alt="" width="400" height="400" loading="lazy"></span><span class="product-name">Claveles japoneses</span></button>
-          <button type="button" class="product-card" data-product="Mini Clavel"><span class="product-media"><img src="assets/flores/mini-clavel.jpg" alt="" width="400" height="400" loading="lazy"></span><span class="product-name">Mini clavel</span></button>
-          <button type="button" class="product-card" data-product="Gypsophillas"><span class="product-media product-media-empty" style="--swatch:#f3e8ff"></span><span class="product-name">Gypsophila</span></button>
-        </div>
+        <ul class="product-grid" id="flowerGrid">
+          <li class="product">
+            <button type="button" class="product-open" data-product="Pensamientos" data-kind="flor">
+              <span class="product-media product-media-empty" style="--swatch:#7B4FD1"><span class="media-note">Foto próximamente</span></span>
+              <span class="product-name">Pensamientos</span>
+              <span class="product-flavor">Colores variados, suave</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Pensamientos" data-kind="flor" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Pensamientos al pedido</span></button>
+          </li>
+          <li class="product">
+            <button type="button" class="product-open" data-product="Mini Violas" data-kind="flor">
+              <span class="product-media product-media-empty" style="--swatch:#9B6BFF"><span class="media-note">Foto próximamente</span></span>
+              <span class="product-name">Mini violas</span>
+              <span class="product-flavor">Delicada, para detalle</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Mini Violas" data-kind="flor" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Mini violas al pedido</span></button>
+          </li>
+          <li class="product">
+            <button type="button" class="product-open" data-product="Calendulas" data-kind="flor">
+              <span class="product-media"><img src="assets/flores/calendula.jpg" alt="" width="400" height="400" loading="lazy"></span>
+              <span class="product-name">Caléndulas</span>
+              <span class="product-flavor">Suave, apenas picante</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Calendulas" data-kind="flor" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Caléndulas al pedido</span></button>
+          </li>
+          <li class="product">
+            <button type="button" class="product-open" data-product="Capuchinas" data-kind="flor">
+              <span class="product-media"><img src="assets/flores/capuchina.jpg" alt="" width="400" height="400" loading="lazy"></span>
+              <span class="product-name">Capuchinas</span>
+              <span class="product-flavor">Picante, tipo berro</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Capuchinas" data-kind="flor" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Capuchinas al pedido</span></button>
+          </li>
+          <li class="product">
+            <button type="button" class="product-open" data-product="Claveles Japoneses" data-kind="flor">
+              <span class="product-media"><img src="assets/flores/clavel-japones.jpg" alt="" width="400" height="400" loading="lazy"></span>
+              <span class="product-name">Claveles japoneses</span>
+              <span class="product-flavor">Aroma suave, especiado</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Claveles Japoneses" data-kind="flor" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Claveles japoneses al pedido</span></button>
+          </li>
+          <li class="product">
+            <button type="button" class="product-open" data-product="Mini Clavel" data-kind="flor">
+              <span class="product-media"><img src="assets/flores/mini-clavel.jpg" alt="" width="400" height="400" loading="lazy"></span>
+              <span class="product-name">Mini clavel</span>
+              <span class="product-flavor">Aroma suave</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Mini Clavel" data-kind="flor" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Mini clavel al pedido</span></button>
+          </li>
+          <li class="product">
+            <button type="button" class="product-open" data-product="Gypsophillas" data-kind="flor">
+              <span class="product-media product-media-empty" style="--swatch:#E9DDF7"><span class="media-note">Foto próximamente</span></span>
+              <span class="product-name">Gypsophila</span>
+              <span class="product-flavor">Decorativa</span>
+            </button>
+            <button type="button" class="add-btn" data-add="Gypsophillas" data-kind="flor" aria-pressed="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar<span class="sr-only"> Gypsophila al pedido</span></button>
+          </li>
+        </ul>
       </div>
     </section>
 
     <!-- PARA CHEFS -->
-    <section class="section chef-section" id="chefs">
+    <section class="section section-chefs" id="chefs">
       <div class="container chef-grid">
-        <div class="chef-image" data-reveal>
-          <img src="assets/microgreens-macro.jpg" alt="Mezcla de microgreens verdes, morados y rojos con gotas de agua" width="1000" height="1000" loading="lazy">
+        <div class="chef-visual" data-reveal>
+          <img src="assets/microgreens-macro.jpg" alt="Mezcla de microvegetales verdes, morados y rojos con gotas de agua" width="1254" height="1254" loading="lazy">
         </div>
         <div class="chef-copy" data-reveal>
-          <span class="tag">// para chefs y empresas</span>
-          <h2>Directo del <span class="glow-text">productor</span> a tu cocina</h2>
-          <p>Producimos para restaurantes, hoteles, cafeterías y empresas de alimentos en Santiago. Producción continua e
-            inocuidad garantizada, con formatos y volúmenes a medida y sin intermediarios.</p>
-          <h3 class="chef-steps-title">Cómo pedir</h3>
-          <ol class="chef-steps">
-            <li><strong>Escribes por WhatsApp</strong> con lo que necesitas y para cuándo.</li>
-            <li><strong>Coordinamos formato y volumen</strong> a la medida de tu cocina.</li>
-            <li><strong>Cosechamos y entregamos</strong> el mismo día, o retiras en la granja.</li>
+          <p class="label label-gold">Para chefs y empresas</p>
+          <h2>Una cocina profesional no puede quedarse sin producto</h2>
+          <p class="chef-lead">Producimos para restaurantes, hoteles, cafeterías y empresas de alimentos en Santiago, directo del productor y sin intermediarios.</p>
+          <ul class="check-list">
+            <li>Cosecha continua los 365 días del año</li>
+            <li>Cultivo vertical, sin tierra y sin pesticidas</li>
+            <li>Formatos y volúmenes a la medida de tu cocina</li>
+            <li>Entrega el mismo día de la cosecha, o retiro en la granja</li>
+          </ul>
+          <h3 class="steps-title">Cómo pedir</h3>
+          <ol class="steps">
+            <li><span><strong>Armas tu lista</strong> en el catálogo, o nos cuentas por WhatsApp qué necesitas y para cuándo.</span></li>
+            <li><span><strong>Coordinamos formato y volumen</strong> contigo.</span></li>
+            <li><span><strong>Cosechamos y entregamos</strong> el mismo día, o retiras en la granja.</span></li>
           </ol>
-          <a href="https://wa.me/56979886031?text=Hola%2C%20tengo%20un%20negocio%20y%20quiero%20cotizar%20microgreens"
-             class="btn btn-primary" target="_blank" rel="noopener">¿Tienes un negocio? Pide una muestra</a>
+          <div class="chef-ctas">
+            <a href="https://wa.me/56979886031?text=Hola%2C%20tengo%20un%20negocio%20y%20quiero%20cotizar%20microvegetales%20y%20flores"
+               class="btn btn-gold btn-lg" target="_blank" rel="noopener">Pedir una muestra para mi cocina</a>
+            <a href="#catalogo" class="link-light">Armar un pedido →</a>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- QUE SON -->
-    <section class="section" id="que-son">
-      <div class="container">
-        <div class="section-head" data-reveal>
-          <span class="tag">// el proyecto</span>
-          <h2>No es otra huerta. Es una <span class="glow-text">granjita LED</span> en plena ciudad.</h2>
+    <!-- LA GRANJA -->
+    <section class="section" id="proyecto">
+      <div class="container project-grid">
+        <div class="project-intro" data-reveal>
+          <p class="label">La granja</p>
+          <h2>No es otra huerta. Es una granja LED en plena ciudad.</h2>
+          <p>Los microvegetales son hortalizas cosechadas en su primera etapa de vida: hojas pequeñas con mucho más sabor y color del que su tamaño haría pensar. Los cultivamos dentro de Santiago, con tecnología agrícola y sustentabilidad, para que lleguen frescos a tu mesa.</p>
         </div>
-        <div class="cards-3">
-          <article class="glass-card" data-reveal>
-            <span class="icon-circle">
-              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 22v-9M12 13c-4 0-7-3-7-7 4 0 7 3 7 7zm0 0c4 0 7-3 7-7-4 0-7 3-7 7z"/></svg>
-            </span>
-            <h3>¿Qué son los microgreens?</h3>
-            <p>Hortalizas cosechadas en su primera etapa de vida. Hojas pequeñas con mucho más sabor y color del que
-              su tamaño haría pensar.</p>
-          </article>
-          <article class="glass-card" data-reveal>
-            <span class="icon-circle">
-              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg>
-            </span>
-            <h3>La granja</h3>
-            <p>Una granja vertical LED dentro de la ciudad. Tecnología agrícola y sustentabilidad para producir
-              alimentos frescos sin salir de Santiago.</p>
-          </article>
-          <article class="glass-card" data-reveal>
-            <span class="icon-circle">
-              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M3 12l4-7h10l4 7-4 7H7z"/><circle cx="12" cy="12" r="2.5"/></svg>
-            </span>
-            <h3>El servicio</h3>
-            <p>Delivery directo para restaurantes, hogares, hoteles y cafeterías. Siempre frescos, siempre a tiempo.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- POR QUE ELEGIRNOS -->
-    <section class="section section-dark" id="nosotros">
-      <div class="container">
-        <div class="section-head" data-reveal>
-          <span class="tag">// por qué elegirnos</span>
-          <h2>Cultivo de precisión, <span class="glow-text">resultados reales</span></h2>
-        </div>
-        <div class="features-grid">
-          <div class="feature" data-reveal>
+        <ul class="feature-list">
+          <li class="feature" data-reveal>
             <span class="feature-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></span>
-            <h3>Menos agua, sin tierra</h3>
-            <p>Cultivo vertical con muchísima menos agua, sin tierra y sin herbicidas.</p>
-          </div>
-          <div class="feature" data-reveal>
+            <div><h3>Menos agua, sin tierra</h3><p>Cultivo vertical con muchísima menos agua, sin tierra y sin herbicidas.</p></div>
+          </li>
+          <li class="feature" data-reveal>
             <span class="feature-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/></svg></span>
-            <h3>Libre de pesticidas</h3>
-            <p>Entorno 100&nbsp;% controlado: cuidamos tamaño y sabor sin químicos de por medio.</p>
-          </div>
-          <div class="feature" data-reveal>
-            <span class="feature-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-width="1.6"/><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="7" cy="18" r="1.6"/></svg></span>
-            <h3>A tu medida</h3>
-            <p>¿Necesitas un perfil de sabor o un formato específico? Pregúntanos y lo adaptamos.</p>
-          </div>
-          <div class="feature" data-reveal>
+            <div><h3>Libre de pesticidas</h3><p>Entorno 100&nbsp;% controlado: cuidamos tamaño y sabor sin químicos de por medio.</p></div>
+          </li>
+          <li class="feature" data-reveal>
+            <span class="feature-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="7" cy="18" r="1.6"/></svg></span>
+            <div><h3>A tu medida</h3><p>¿Necesitas un perfil de sabor o un formato específico? Pregúntanos y lo adaptamos.</p></div>
+          </li>
+          <li class="feature" data-reveal>
             <span class="feature-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>
-            <h3>Frescura real</h3>
-            <p>Cosechamos y entregamos el mismo día, todos los días del año.</p>
-          </div>
+            <div><h3>Frescura real</h3><p>Cosechamos y entregamos el mismo día, todos los días del año.</p></div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- PREGUNTAS FRECUENTES -->
+    <section class="section section-soft" id="preguntas">
+      <div class="container faq-wrap">
+        <div class="section-head" data-reveal>
+          <p class="label">Preguntas frecuentes</p>
+          <h2>Antes de escribirnos</h2>
+        </div>
+        <div class="faq" data-reveal>
+          <details>
+            <summary>¿Cómo hago un pedido?</summary>
+            <p>Agrega al pedido las variedades y flores que te interesan y envía la lista por WhatsApp. También puedes escribirnos directo contando qué necesitas y para cuándo. Coordinamos formato, volumen y fecha contigo.</p>
+          </details>
+          <details>
+            <summary>¿Entregan a domicilio?</summary>
+            <p>Cosechamos y entregamos en Santiago el mismo día, o puedes retirar en la granja, en La Reina. Escríbenos tu comuna y te confirmamos la entrega.</p>
+          </details>
+          <details>
+            <summary>¿A quiénes venden?</summary>
+            <p>A restaurantes, hoteles, cafeterías, empresas de alimentos y hogares.</p>
+          </details>
+          <details>
+            <summary>¿Qué flores hay disponibles?</summary>
+            <p>Las flores son de temporada y la disponibilidad cambia. Agrega las que te interesan a tu pedido y te confirmamos qué hay esta semana.</p>
+          </details>
         </div>
       </div>
     </section>
 
-    <!-- CTA BANNER -->
-    <section class="cta-banner" data-reveal>
-      <div class="container cta-banner-inner">
-        <h2>Lleva innovación verde a tu mesa</h2>
-        <p>Un mensaje y listo. Coordinamos tu pedido, retiro o delivery el mismo día.</p>
+    <!-- CTA FINAL -->
+    <section class="cta-banner" aria-labelledby="ctaTitle">
+      <div class="container cta-inner" data-reveal>
+        <h2 id="ctaTitle">¿Qué necesita tu cocina esta semana?</h2>
+        <p>Un mensaje y listo. Coordinamos tu pedido, retiro o entrega el mismo día.</p>
         <a href="https://wa.me/56979886031?text=Hola%20Mini%20Vegetales%2C%20quiero%20hacer%20un%20pedido"
-           class="btn btn-dark btn-lg" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+           class="btn btn-ink btn-lg" target="_blank" rel="noopener">Escribir por WhatsApp</a>
       </div>
     </section>
 
@@ -228,86 +431,127 @@
     <section class="section" id="contacto">
       <div class="container">
         <div class="section-head" data-reveal>
-          <span class="tag">// contacto</span>
+          <p class="label">Contacto</p>
           <h2>Hablemos sin vueltas</h2>
         </div>
-        <div class="contact-grid">
-          <a class="contact-card" data-reveal
-             href="https://wa.me/56979886031?text=Hola%20Mini%20Vegetales" target="_blank" rel="noopener">
-            <span class="icon-circle"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-4.5-7.8L21 3l-1.2 4.5A9 9 0 0 1 21 12z"/><path d="M8 9.5c.5 2.5 3 5 5.5 5.5"/></svg></span>
-            <h3>WhatsApp</h3>
-            <p>+56 9 7988 6031</p>
-          </a>
-          <a class="contact-card" data-reveal href="tel:+56979886031">
-            <span class="icon-circle"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2C9.5 21 3 14.5 3 6a2 2 0 0 1 2-2z"/></svg></span>
-            <h3>Teléfono</h3>
-            <p>+56 9 7988 6031</p>
-          </a>
-          <a class="contact-card" data-reveal href="mailto:info@minivegetales.cl">
-            <span class="icon-circle"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
-            <h3>Email</h3>
-            <p>info@minivegetales.cl</p>
-          </a>
-          <a class="contact-card" data-reveal
-             href="https://www.instagram.com/minivegetales/" target="_blank" rel="noopener">
-            <span class="icon-circle"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="1"/></svg></span>
-            <h3>Instagram</h3>
-            <p>@minivegetales</p>
-          </a>
-          <a class="contact-card" data-reveal
-             href="https://maps.google.com/?q=Alcalde+Fernando+Castillo+Velasco+6989+La+Reina+Santiago" target="_blank" rel="noopener">
-            <span class="icon-circle"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 22s7-7.2 7-12a7 7 0 1 0-14 0c0 4.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
-            <h3>Ubicación</h3>
-            <p>Av. Alcalde F. Castillo Velasco #6989, La Reina</p>
-          </a>
-          <a class="contact-card" data-reveal
-             href="https://www.facebook.com/Minivegetales-264967574153004/?ref=br_rs" target="_blank" rel="noopener">
-            <span class="icon-circle"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-1.7 0-3 1.3-3 3v2H9v3h2v6h3v-6h2.2l.8-3H14V9z"/></svg></span>
-            <h3>Facebook</h3>
-            <p>Mini Vegetales</p>
-          </a>
-        </div>
+        <ul class="contact-grid">
+          <li class="contact-main" data-reveal>
+            <a class="contact-card" href="https://wa.me/56979886031?text=Hola%20Mini%20Vegetales" target="_blank" rel="noopener">
+              <span class="contact-title">WhatsApp</span>
+              <span class="contact-value">+56 9 7988 6031</span>
+              <span class="contact-hint">La forma más rápida de pedir</span>
+            </a>
+          </li>
+          <li data-reveal>
+            <a class="contact-card" href="tel:+56979886031">
+              <span class="contact-title">Teléfono</span>
+              <span class="contact-value">+56 9 7988 6031</span>
+            </a>
+          </li>
+          <li data-reveal>
+            <a class="contact-card" href="mailto:info@minivegetales.cl">
+              <span class="contact-title">Email</span>
+              <span class="contact-value">info@minivegetales.cl</span>
+            </a>
+          </li>
+          <li data-reveal>
+            <a class="contact-card" href="https://www.instagram.com/minivegetales/" target="_blank" rel="noopener">
+              <span class="contact-title">Instagram</span>
+              <span class="contact-value">@minivegetales</span>
+            </a>
+          </li>
+          <li data-reveal>
+            <a class="contact-card" href="https://maps.google.com/?q=Alcalde+Fernando+Castillo+Velasco+6989+La+Reina+Santiago" target="_blank" rel="noopener">
+              <span class="contact-title">Granja</span>
+              <span class="contact-value">Av. Alcalde F. Castillo Velasco 6989, La Reina</span>
+            </a>
+          </li>
+          <li data-reveal>
+            <a class="contact-card" href="https://www.facebook.com/Minivegetales-264967574153004/?ref=br_rs" target="_blank" rel="noopener">
+              <span class="contact-title">Facebook</span>
+              <span class="contact-value">Mini Vegetales</span>
+            </a>
+          </li>
+          <li data-reveal>
+            <a class="contact-card" href="https://www.linkedin.com/company/minivegetales/" target="_blank" rel="noopener">
+              <span class="contact-title">LinkedIn</span>
+              <span class="contact-value">Mini Vegetales</span>
+            </a>
+          </li>
+        </ul>
       </div>
     </section>
   </main>
 
   <footer class="footer">
     <div class="container footer-inner">
-      <a href="#inicio" class="logo">Mini <span>Vegetales</span><i class="dot"></i></a>
-      <p>Granja vertical urbana &middot; La Reina, Santiago de Chile</p>
-      <div class="footer-social">
-        <a href="https://www.facebook.com/Minivegetales-264967574153004/?ref=br_rs" target="_blank" rel="noopener" aria-label="Facebook"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-1.7 0-3 1.3-3 3v2H9v3h2v6h3v-6h2.2l.8-3H14V9z"/></svg></a>
-        <a href="https://www.instagram.com/minivegetales/" target="_blank" rel="noopener" aria-label="Instagram"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="1"/></svg></a>
-        <a href="https://www.linkedin.com/company/minivegetales/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M6 10v8M6 6.5v.01M10 18v-5a3 3 0 0 1 6 0v5M10 10v8"/></svg></a>
-      </div>
+      <a href="#inicio" class="logo logo-light" aria-label="Mini Vegetales, volver arriba">Mini Vegetales<i class="logo-dot" aria-hidden="true"></i></a>
+      <p>Granja vertical urbana · La Reina, Santiago de Chile</p>
+      <ul class="footer-links">
+        <li><a href="https://www.instagram.com/minivegetales/" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.facebook.com/Minivegetales-264967574153004/?ref=br_rs" target="_blank" rel="noopener">Facebook</a></li>
+        <li><a href="https://www.linkedin.com/company/minivegetales/" target="_blank" rel="noopener">LinkedIn</a></li>
+      </ul>
       <small>&copy; <span id="year">2026</span> Mini Vegetales. Hecho con cuidado en Santiago.</small>
     </div>
   </footer>
 
-  <a class="whatsapp-float" href="https://wa.me/56979886031?text=Hola%20Mini%20Vegetales"
-     target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
-    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-4.5-7.8L21 3l-1.2 4.5A9 9 0 0 1 21 12z"/><path d="M8 9.5c.5 2.5 3 5 5.5 5.5"/></svg>
-  </a>
+  <!-- BARRA DE PEDIDO: dos estados (vacía = WhatsApp directo · con productos = revisar y enviar) -->
+  <div class="order-bar" id="orderBar">
+    <p class="order-bar-text" id="orderBarText">¿Hablamos?</p>
+    <a class="btn btn-gold btn-sm" id="orderBarWhatsapp" href="https://wa.me/56979886031?text=Hola%20Mini%20Vegetales" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">Escríbenos</a>
+    <button class="btn btn-gold btn-sm" id="orderBarReview" type="button" hidden>Revisar y enviar</button>
+  </div>
+  <div class="sr-only" id="orderStatus" role="status" aria-live="polite"></div>
 
-  <!-- PRODUCT DETAIL MODAL (filled dynamically by script.js) -->
-  <div class="modal-overlay" id="productModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
-    <div class="modal-card">
-      <button class="modal-close" id="modalClose" type="button" aria-label="Cerrar">
-        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
-      <div class="modal-media" id="modalMedia"></div>
-      <div class="modal-body">
-        <span class="tag" id="modalTag">// detalle del producto</span>
-        <h3 id="modalTitle"></h3>
-        <p id="modalDescription"></p>
-        <h4 class="modal-uses-title">Ideal para</h4>
-        <ul class="modal-benefits" id="modalBenefits"></ul>
-        <a class="btn btn-primary" id="modalCta" target="_blank" rel="noopener">Pedir por WhatsApp</a>
+  <!-- DIÁLOGO: DETALLE DE PRODUCTO -->
+  <dialog class="dialog product-dialog" id="productDialog" aria-labelledby="productTitle" closedby="any">
+    <button class="dialog-close" type="button" data-close aria-label="Cerrar">
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="product-dialog-grid">
+      <div class="product-dialog-media" id="productMedia"></div>
+      <div class="product-dialog-body">
+        <p class="label" id="productKind">Microvegetal</p>
+        <h3 id="productTitle"></h3>
+        <p class="product-dialog-flavor" id="productFlavor"></p>
+        <p id="productDescription"></p>
+        <div id="productUsesWrap">
+          <h4>Ideal para</h4>
+          <ul class="uses-list" id="productUses"></ul>
+        </div>
+        <div class="dialog-actions">
+          <button class="btn btn-gold" type="button" id="productAdd" aria-pressed="false">Agregar al pedido</button>
+          <a class="btn btn-outline" id="productWhatsapp" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+        </div>
       </div>
     </div>
-  </div>
+  </dialog>
 
-  <script src="products-data.js?v=3"></script>
-  <script src="script.js?v=3"></script>
+  <!-- DIÁLOGO: MI PEDIDO -->
+  <dialog class="dialog order-dialog" id="orderDialog" aria-labelledby="orderTitle" closedby="any">
+    <button class="dialog-close" type="button" data-close aria-label="Cerrar">
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="order-dialog-body">
+      <p class="label">Tu pedido</p>
+      <h3 id="orderTitle">Revisa tu lista</h3>
+      <p class="order-empty" id="orderEmpty">Aún no agregaste productos. Elige en el catálogo o escríbenos directo.</p>
+      <div id="orderGroups"></div>
+      <label class="field" for="orderNotes">
+        <span>¿Para cuándo y en qué formato? <em>(opcional)</em></span>
+        <textarea id="orderNotes" rows="3" maxlength="400" placeholder="Ej.: entrega el viernes por la mañana, para 40 cubiertos"></textarea>
+      </label>
+      <p class="order-hint">Se abrirá WhatsApp con tu lista ya escrita. Te respondemos para confirmar disponibilidad, formato y entrega.</p>
+      <div class="dialog-actions">
+        <a class="btn btn-gold btn-lg" id="orderSend" href="https://wa.me/56979886031" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+        <button class="btn btn-outline" type="button" data-close>Seguir agregando</button>
+        <button class="btn-text" type="button" id="orderClear">Vaciar lista</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="products-data.js?v=4"></script>
+  <script src="script.js?v=4"></script>
 </body>
 </html>

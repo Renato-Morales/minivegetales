@@ -39,48 +39,43 @@ flujo de venta es "escribinos por WhatsApp".
 
 ## Cache-busting
 
-`index.html` referencia `styles.css?v=3`, `script.js?v=3` y
-`products-data.js?v=3`. **Bumpear ese `?v=` cada vez que se edite
-cualquiera de esos tres archivos.** Se agregó porque sospechamos que
-proxies de datos de redes móviles (ej. Chrome Android Data Saver) pueden
-servir una copia vieja cacheada ignorando `Cache-Control`, dejando
-features nuevas (como la sección de flores) sin JS actualizado en
-algunos celulares. No confirmado 100% como causa raíz, pero es mitigación
-estándar y gratis.
+`index.html` referencia `styles.css?v=8`, `script.js?v=4` y `products-data.js?v=4`.
+**Bumpear ese `?v=` cada vez que se edite cualquiera de esos tres archivos** (mitigación contra
+proxies de datos móviles que sirven copias viejas).
 
-## Features principales
+## Rediseño (rama `rediseno`)
 
-- Hero con canvas de partículas (`#fx-canvas`, se apaga con `prefers-reduced-motion`),
-  reveal-on-scroll (`[data-reveal]` + `IntersectionObserver`). El CSS solo oculta
-  `[data-reveal]` si `<html>` tiene la clase `js` (la agrega un script inline en el
-  `<head>`), así el contenido nunca queda invisible si el JS falla o queda en caché viejo.
-- Catálogo: cuadrículas estáticas de tarjetas con foto (`.catalog-grid` > `button.product-card`
-  con `data-product`), escritas directo en `index.html` (sin depender de JS para verse).
-  Reemplazan los antiguos marquees. Productos sin foto (`"image": null`) muestran un
-  recuadro de color (`--swatch`).
-- Modal de detalle de producto al tocar una tarjeta: foto + descripción + "Ideal para" +
-  botón de WhatsApp con mensaje prearmado. Datos en `PRODUCT_DETAILS` (`products-data.js`),
-  con `label` (nombre con tildes), `description`, `uses` e `image`. Foco atrapado dentro
-  del modal mientras está abierto.
-- Se quitaron los claims de salud de las descripciones (riesgo legal y poco serio para
-  cocinas profesionales); ahora hablan de sabor, color y usos en el plato.
+Mezcla de tres direcciones: **porcelana** (base clara, catálogo), **berenjena** (sección de flores)
+y **caléndula** (dorado para toda acción: botones, CTA). Tipografía: Gloock (títulos) + Figtree (texto).
+
+- **Estructura**: hero → cifras → "cultivamos para" → catálogo de microvegetales (filtro por sabor)
+  → flores de temporada → para chefs (con "Cómo pedir") → la granja → preguntas → CTA → contacto.
+- **Pedido por WhatsApp**: cada tarjeta tiene "Agregar"; la barra inferior (`#orderBar`) muestra
+  "Revisar y enviar" y abre `#orderDialog`, que arma el mensaje (agrupado en microvegetales / flores
+  + notas) y lo manda a `wa.me`. La lista se guarda en `localStorage` (clave `mv-pedido`) solo como
+  comodidad. Sin precios ni carrito a propósito: se coordina por WhatsApp.
+- **Diálogos**: `<dialog>` nativo con `showModal()` y `closedby="any"` (más respaldo en `script.js`
+  para Safari). Foco y Escape los maneja el navegador.
+- **Sabor de cada producto**: texto corto (`.product-flavor`) y `data-tags` (picante, dulce, herbal,
+  suave) escritos en `index.html`; los usa el filtro. Descripción y "Ideal para" siguen en
+  `products-data.js`.
+- `index.html` se edita a mano (las 22 tarjetas son HTML estático, funciona sin JS). Para agregar un
+  producto: copiar una `<li class="product">` y agregar su entrada en `PRODUCT_DETAILS`.
+- Se eliminaron el canvas de partículas y los contadores animados.
 
 ## Design tokens (styles.css, bloque `:root`)
 
-Todo valor visual repetido vive como variable CSS; no hardcodear colores ni medidas nuevas.
+Todo valor repetido es un token; no hardcodear colores ni medidas nuevas.
 
-- **Colores**: canales `--lime-rgb`, `--pink-rgb`, `--cyan-rgb`, `--violet-rgb`, `--bg-rgb`,
-  `--white-rgb` para transparencias: `rgb(var(--lime-rgb) / 0.35)`. `--lime`, `--bg`, etc. son
-  el color pleno. Pendiente: renombrar por rol (`--accent`, `--accent-2`, `--flowers`).
-- **Tipografía**: escala `--fs-xs … --fs-3xl`, más `--fs-h2` y `--fs-display` (fluidos).
-- **Espaciado**: grilla de 4 px, `--sp-N` = N × 4 px (p. ej. `--sp-6` = 24 px).
-- **Radios**: `--radius-xs / -sm / --radius / -lg / -pill / -round`.
-- **Sombras y brillos**: `--glow-md`, `--glow-lg`, `--glow-ambient`, `--shadow-modal`,
-  `--text-glow-lime`, `--text-glow-pink`, `--overlay`. Los brillos de puntos decorativos
-  (3 o 4) quedan literales a propósito.
-- **Movimiento**: `--dur-fast` (.25 s), `--dur-base` (.3 s), `--dur-slow` (.7 s).
-- `script.js` dibuja las partículas con el lima en `rgba(166, 255, 77, …)` literal (canvas no
-  lee variables CSS); si cambia el acento, actualizarlo ahí también.
+- **Colores**: canales `--ink-rgb`, `--forest-rgb`, `--aubergine-rgb`, `--gold-rgb`, `--cream-rgb`,
+  `--rose-rgb`, `--porcelain-rgb`, `--white-rgb` para transparencias (`rgb(var(--ink-rgb) / .12)`);
+  colores plenos `--ink`, `--forest`, `--gold`, `--rose`, etc.; `--muted`, `--line`, `--on-forest`,
+  `--on-aubergine` para textos secundarios. `--focus` cambia a dorado dentro de secciones oscuras.
+- **Tipografía**: `--font-display`, `--font-body`, escala `--fs-xs … --fs-2xl`, `--fs-h2`, `--fs-display`.
+- **Espaciado**: grilla de 4 px, `--sp-N` = N × 4 px. **Radios**: `--radius-sm / --radius / --radius-lg / --radius-pill`.
+- **Sombras**: `--shadow-card`, `--shadow-pop`, `--shadow-bar`. **Movimiento**: `--dur-fast/base/slow`, `--ease`.
+- Botones: `.btn` + `-gold | -ink | -outline | -outline-light`, tamaños `-sm | -lg`, con estados
+  hover, active y disabled.
 
 ## Pendiente / a medio terminar
 
