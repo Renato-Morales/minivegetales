@@ -137,10 +137,10 @@ img { max-width: 100%; display: block; }
   display: inline-block;
 }
 .nav-links { display: flex; gap: 28px; font-size: 0.92rem; }
-.nav-links a { color: var(--text-dim); transition: color 0.2s ease; }
+.nav-links a { color: var(--text-dim); padding: 10px 0; transition: color 0.2s ease; }
 .nav-links a:hover { color: var(--lime); }
 .nav-cta { font-size: 0.88rem; padding: 10px 20px; }
-.burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
+.burger { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 44px; height: 44px; background: none; border: none; cursor: pointer; }
 .burger span { width: 24px; height: 2px; background: var(--text); display: block; }
 
 .icon-inline { width: 14px; height: 14px; vertical-align: -2px; fill: none; stroke: var(--cyan); stroke-width: 2; margin-right: 4px; }
@@ -157,7 +157,7 @@ img { max-width: 100%; display: block; }
 }
 .hero-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(5, 8, 7, 0.75) 0%, rgba(5, 8, 7, 0.88) 55%, var(--bg) 100%);
+  background: linear-gradient(180deg, rgba(5, 8, 7, 0.5) 0%, rgba(5, 8, 7, 0.78) 60%, var(--bg) 100%);
   z-index: 1;
 }
 .hero-grid {
@@ -262,9 +262,7 @@ img { max-width: 100%; display: block; }
   border: 1px solid var(--panel-border);
   border-radius: var(--radius);
   padding: 32px;
-  transition: transform 0.3s ease, border-color 0.3s ease;
 }
-.glass-card:hover { transform: translateY(-6px); border-color: rgba(166,255,77,0.35); }
 .glass-card h3 { margin-bottom: 10px; font-size: 1.15rem; }
 .glass-card p { color: var(--text-dim); font-size: 0.95rem; }
 
@@ -280,67 +278,68 @@ img { max-width: 100%; display: block; }
 }
 .icon-circle svg { width: 22px; height: 22px; fill: none; stroke: var(--lime); stroke-width: 1.6; }
 
-/* ===== Marquee variedades ===== */
-.marquee {
-  width: 100%;
-  overflow: hidden;
-  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
-  padding: 10px 0 20px;
+/* ===== Catálogo (cuadrícula con fotos) ===== */
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: 20px;
 }
-.marquee-track {
+.product-card {
   display: flex;
-  gap: 18px;
-  width: max-content;
-  animation: marquee 38s linear infinite;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px 10px 16px;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: inherit;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
 }
-.marquee:hover .marquee-track { animation-play-state: paused; }
-.marquee-reverse .marquee-track { animation-direction: reverse; }
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.product-card:hover,
+.product-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(166, 255, 77, 0.45);
+  background: rgba(255, 255, 255, 0.07);
+}
+.product-media {
+  display: block;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+}
+.product-media img { width: 100%; height: 100%; object-fit: cover; }
+.product-media-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--swatch) 55%, transparent) 0, transparent 62%),
+    rgba(255, 255, 255, 0.03);
+}
+.product-media-empty::after {
+  content: "";
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: 0 0 28px var(--swatch);
+}
+.product-name { font-family: var(--ff-head); font-weight: 600; font-size: 1rem; }
 
 .flowers-section {
   background: radial-gradient(ellipse at 50% 0%, rgba(255, 110, 196, 0.08), transparent 60%), var(--bg-soft);
 }
-.flowers-section .variety-chip { border-color: rgba(255, 110, 196, 0.18); }
-.flowers-section .variety-chip:hover { border-color: rgba(255, 110, 196, 0.5); }
-
-.variety-chip {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--panel);
-  border: 1px solid var(--panel-border);
-  border-radius: 999px;
-  padding: 12px 22px;
-  font-size: 0.95rem;
-  white-space: nowrap;
-  cursor: pointer;
-  font-family: inherit;
-  color: var(--text);
-  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-}
-.variety-chip:hover,
-.variety-chip:focus-visible {
-  transform: translateY(-3px);
-  border-color: rgba(166, 255, 77, 0.45);
-  background: rgba(255, 255, 255, 0.07);
-  outline: none;
-}
-.variety-chip .swatch {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.variety-chip .chip-hint {
-  margin-left: 2px;
-  opacity: 0.5;
-  font-size: 0.8rem;
-}
+.flowers-section .product-card { border-color: rgba(255, 110, 196, 0.18); }
+.flowers-section .product-card:hover,
+.flowers-section .product-card:focus-visible { border-color: rgba(255, 110, 196, 0.5); }
 
 /* ===== Features ===== */
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 24px;
 }
 .feature {
@@ -348,12 +347,10 @@ img { max-width: 100%; display: block; }
   border-radius: var(--radius);
   border: 1px solid var(--panel-border);
   background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
-  transition: transform 0.3s ease, border-color 0.3s ease;
 }
-.feature:hover { transform: translateY(-5px); border-color: rgba(155,107,255,0.4); }
 .feature-icon { display: inline-flex; margin-bottom: 14px; }
 .feature-icon svg { width: 26px; height: 26px; fill: none; stroke: var(--violet); stroke-width: 1.6; }
-.feature h4 { margin-bottom: 8px; font-size: 1.05rem; }
+.feature h3 { margin-bottom: 8px; font-size: 1.05rem; }
 .feature p { color: var(--text-dim); font-size: 0.92rem; }
 
 /* ===== Chef section ===== */
@@ -371,15 +368,20 @@ img { max-width: 100%; display: block; }
 }
 .chef-copy h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); margin: 10px 0 18px; }
 .chef-copy p { color: var(--text-dim); margin-bottom: 20px; }
-.chef-list { list-style: none; margin-bottom: 28px; display: flex; flex-direction: column; gap: 10px; }
-.chef-list li { position: relative; padding-left: 22px; color: var(--text-dim); font-size: 0.95rem; }
-.chef-list li::before {
-  content: "";
-  position: absolute; left: 0; top: 7px;
-  width: 10px; height: 10px;
-  border-radius: 2px;
-  background: var(--lime);
-  box-shadow: 0 0 10px var(--lime);
+.chef-steps-title { font-size: 1.05rem; margin: 6px 0 12px; }
+.chef-steps { list-style: none; counter-reset: step; margin-bottom: 28px; display: flex; flex-direction: column; gap: 12px; }
+.chef-steps li { position: relative; padding-left: 38px; color: var(--text-dim); font-size: 0.97rem; counter-increment: step; }
+.chef-steps li strong { color: var(--text); font-weight: 600; }
+.chef-steps li::before {
+  content: counter(step);
+  position: absolute; left: 0; top: 0;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(166, 255, 77, 0.5);
+  color: var(--lime);
+  font-family: var(--ff-head);
+  font-size: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
 }
 
 /* ===== CTA banner ===== */
@@ -413,7 +415,7 @@ img { max-width: 100%; display: block; }
 }
 .contact-card:hover { transform: translateY(-5px); border-color: rgba(77,239,208,0.4); }
 .contact-card .icon-circle svg { stroke: var(--cyan); }
-.contact-card h4 { margin-bottom: 4px; font-size: 1.02rem; }
+.contact-card h3 { margin-bottom: 4px; font-size: 1.02rem; }
 .contact-card p { color: var(--text-dim); font-size: 0.9rem; }
 
 /* ===== Footer ===== */
@@ -422,14 +424,14 @@ img { max-width: 100%; display: block; }
 .footer p { color: var(--text-dim); font-size: 0.9rem; }
 .footer-social { display: flex; gap: 14px; margin: 6px 0; }
 .footer-social a {
-  width: 34px; height: 34px;
+  width: 44px; height: 44px;
   display: flex; align-items: center; justify-content: center;
   border-radius: 50%;
   border: 1px solid var(--panel-border);
-  font-size: 0.75rem;
   color: var(--text-dim);
 }
 .footer-social a:hover { color: var(--lime); border-color: var(--lime); }
+.footer-social svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; }
 .footer small { color: var(--text-dim); font-size: 0.8rem; }
 
 /* ===== WhatsApp floating button ===== */
@@ -448,8 +450,8 @@ img { max-width: 100%; display: block; }
 @keyframes floatpulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 
 /* ===== Reveal on scroll ===== */
-[data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
-[data-reveal].is-visible { opacity: 1; transform: translateY(0); }
+.js [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.js [data-reveal].is-visible { opacity: 1; transform: translateY(0); }
 
 /* ===== Product detail modal ===== */
 .modal-overlay {
@@ -485,7 +487,7 @@ img { max-width: 100%; display: block; }
   position: absolute;
   top: 16px; right: 16px;
   z-index: 2;
-  width: 36px; height: 36px;
+  width: 44px; height: 44px;
   border-radius: 50%;
   background: rgba(6, 10, 8, 0.6);
   border: 1px solid var(--panel-border);
@@ -515,6 +517,8 @@ img { max-width: 100%; display: block; }
 .modal-body { padding: 28px 30px 32px; }
 .modal-body h3 { font-size: 1.6rem; margin-bottom: 12px; }
 .modal-body p { color: var(--text-dim); font-size: 0.97rem; margin-bottom: 18px; }
+.modal-uses-title { font-size: 0.95rem; margin-bottom: 10px; color: var(--text); }
+.modal-uses-title[hidden] { display: none; }
 .modal-benefits { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 26px; }
 .modal-benefits li {
   position: relative;
@@ -554,4 +558,21 @@ img { max-width: 100%; display: block; }
     gap: 18px;
     border-bottom: 1px solid var(--panel-border);
   }
+}
+
+/* ===== Foco visible ===== */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 3px;
+}
+
+/* ===== Movimiento reducido ===== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .js [data-reveal] { opacity: 1; transform: none; }
 }

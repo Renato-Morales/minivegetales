@@ -39,8 +39,8 @@ flujo de venta es "escribinos por WhatsApp".
 
 ## Cache-busting
 
-`index.html` referencia `styles.css?v=2`, `script.js?v=2` y
-`products-data.js?v=2`. **Bumpear ese `?v=` cada vez que se edite
+`index.html` referencia `styles.css?v=3`, `script.js?v=3` y
+`products-data.js?v=3`. **Bumpear ese `?v=` cada vez que se edite
 cualquiera de esos tres archivos.** Se agregó porque sospechamos que
 proxies de datos de redes móviles (ej. Chrome Android Data Saver) pueden
 servir una copia vieja cacheada ignorando `Cache-Control`, dejando
@@ -50,20 +50,25 @@ estándar y gratis.
 
 ## Features principales
 
-- Hero con canvas de partículas (`#fx-canvas`), reveal-on-scroll
-  (`[data-reveal]` + `IntersectionObserver`, threshold 0.15).
-- Marquee infinito de 15 variedades de microgreens (`#marqueeTrack`).
-- Marquee infinito de flores comestibles de temporada
-  (`#marqueeTrackFlores`, clase `marquee-reverse`) — catálogo limitado,
-  cambia según temporada.
-- Ambos marquees pausan la animación en `:hover` (CSS, no JS) —
-  ver `.marquee:hover .marquee-track` en `styles.css`.
-- Modal de detalle de producto al clickear un chip: foto + descripción +
-  beneficios + botón de WhatsApp con mensaje prearmado. Datos en
-  `PRODUCT_DETAILS` dentro de `products-data.js`.
+- Hero con canvas de partículas (`#fx-canvas`, se apaga con `prefers-reduced-motion`),
+  reveal-on-scroll (`[data-reveal]` + `IntersectionObserver`). El CSS solo oculta
+  `[data-reveal]` si `<html>` tiene la clase `js` (la agrega un script inline en el
+  `<head>`), así el contenido nunca queda invisible si el JS falla o queda en caché viejo.
+- Catálogo: cuadrículas estáticas de tarjetas con foto (`.catalog-grid` > `button.product-card`
+  con `data-product`), escritas directo en `index.html` (sin depender de JS para verse).
+  Reemplazan los antiguos marquees. Productos sin foto (`"image": null`) muestran un
+  recuadro de color (`--swatch`).
+- Modal de detalle de producto al tocar una tarjeta: foto + descripción + "Ideal para" +
+  botón de WhatsApp con mensaje prearmado. Datos en `PRODUCT_DETAILS` (`products-data.js`),
+  con `label` (nombre con tildes), `description`, `uses` e `image`. Foco atrapado dentro
+  del modal mientras está abierto.
+- Se quitaron los claims de salud de las descripciones (riesgo legal y poco serio para
+  cocinas profesionales); ahora hablan de sabor, color y usos en el plato.
 
 ## Pendiente / a medio terminar
 
+- **Productos sin foto o con foto equivocada** (`"image": null`): Acelga roja y Albahaca
+  (antes usaban la foto del rábano), y las flores de abajo.
 - **Flores sin foto real todavía** (quedan con placeholder de color en
   el modal, `"image": null` en `products-data.js`):
   - Pensamientos

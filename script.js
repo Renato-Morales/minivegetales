@@ -1,87 +1,85 @@
 // ===== Mini Vegetales landing — interactions =====
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 document.getElementById("year").textContent = new Date().getFullYear();
 
 // ---- Mobile menu toggle ----
 const burger = document.getElementById("burger");
 const navLinks = document.getElementById("navLinks");
-burger.addEventListener("click", () => {
-  const isOpen = navLinks.classList.toggle("is-open");
-  burger.setAttribute("aria-expanded", String(isOpen));
-});
+function setMenu(open) {
+  navLinks.classList.toggle("is-open", open);
+  burger.setAttribute("aria-expanded", String(open));
+  burger.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+}
+burger.addEventListener("click", () => setMenu(!navLinks.classList.contains("is-open")));
 navLinks.querySelectorAll("a").forEach((link) => {
-  link.addEventListener("click", () => navLinks.classList.remove("is-open"));
+  link.addEventListener("click", () => setMenu(false));
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && navLinks.classList.contains("is-open")) {
+    setMenu(false);
+    burger.focus();
+  }
 });
 
 // ---- Scroll reveal ----
+// El CSS solo oculta [data-reveal] cuando <html> tiene la clase "js"; si algo falla
+// aquí, todo se muestra igual (ver el bloque try/catch y el fallback de abajo).
 const revealEls = document.querySelectorAll("[data-reveal]");
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.15 }
-);
-revealEls.forEach((el) => revealObserver.observe(el));
+function showAll() {
+  revealEls.forEach((el) => el.classList.add("is-visible"));
+}
+try {
+  if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+    showAll();
+  } else {
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    revealEls.forEach((el) => revealObserver.observe(el));
+  }
+} catch (err) {
+  showAll();
+}
 
-// ---- Animated stat counters ----
+// ---- Animated stat counters (el HTML ya trae el valor final; esto solo lo anima) ----
 const counters = document.querySelectorAll("[data-count]");
-const counterObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      const el = entry.target;
-      const target = parseInt(el.dataset.count, 10);
-      const duration = 1200;
-      const start = performance.now();
-      function tick(now) {
-        const progress = Math.min((now - start) / duration, 1);
-        el.textContent = Math.floor(progress * target);
-        if (progress < 1) requestAnimationFrame(tick);
-        else el.textContent = target;
-      }
-      requestAnimationFrame(tick);
-      counterObserver.unobserve(el);
-    });
-  },
-  { threshold: 0.5 }
-);
-counters.forEach((el) => counterObserver.observe(el));
-
-// ---- Variedades data + marquee render ----
-const VARIEDADES = [
-  { name: "Amaranto", color: "#ff6b6b" },
-  { name: "Rucula", color: "#6fe84f" },
-  { name: "Betarraga", color: "#9b6bff" },
-  { name: "Mostaza Amarilla-Negra", color: "#ffd93d" },
-  { name: "Maiz Dulce", color: "#ffb84d" },
-  { name: "Lentejas", color: "#4defd0" },
-  { name: "Repollo", color: "#c76bff" },
-  { name: "Rabano", color: "#ff5d9e" },
-  { name: "Arvejas", color: "#8bff6b" },
-  { name: "Cilantro", color: "#7ee87e" },
-  { name: "Acelga Roja", color: "#ff7676" },
-  { name: "Girasol", color: "#ffe14d" },
-  { name: "Ajo Chino", color: "#d6ff6b" },
-  { name: "Zanahoria", color: "#ff9a4d" },
-  { name: "Albahaca", color: "#4de1a6" },
-];
-
-// Flores comestibles de temporada -- catalogo limitado, disponibilidad estacional
-const FLORES = [
-  { name: "Pensamientos", color: "#9b6bff" },
-  { name: "Mini Violas", color: "#8a4fff" },
-  { name: "Calendulas", color: "#ffcc33" },
-  { name: "Capuchinas", color: "#ff7a45" },
-  { name: "Claveles Japoneses", color: "#ff6ec4" },
-  { name: "Mini Clavel", color: "#ff4d8d" },
-  { name: "Gypsophillas", color: "#f3e8ff" },
-];
+if (!prefersReducedMotion && "IntersectionObserver" in window) {
+  const counterObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = parseInt(el.dataset.count, 10);
+        const suffix = el.dataset.suffix || "";
+        const duration = 1200;
+        const start = performance.now();
+        function tick(now) {
+          const progress = Math.min((now - start) / duration, 1);
+          el.textContent = Math.floor(progress * target) + suffix;
+          if (progress < 1) requestAnimationFrame(tick);
+          else el.textContent = target + suffix;
+        }
+        requestAnimationFrame(tick);
+        counterObserver.unobserve(el);
+      });
+    },
+    { threshold: 0.5 }
+  );
+  counters.forEach((el) => counterObserver.observe(el));
+}
 
 // ---- Product detail modal ----
+// Las tarjetas del catálogo ya vienen en el HTML (botones .product-card con data-product);
+// aquí solo se les conecta el modal. Datos en PRODUCT_DETAILS (products-data.js).
 const modalOverlay = document.getElementById("productModal");
 const modalMedia = document.getElementById("modalMedia");
 const modalTitle = document.getElementById("modalTitle");
@@ -89,27 +87,41 @@ const modalDescription = document.getElementById("modalDescription");
 const modalBenefits = document.getElementById("modalBenefits");
 const modalCta = document.getElementById("modalCta");
 const modalClose = document.getElementById("modalClose");
-let lastFocusedChip = null;
+let lastFocusedCard = null;
 
-function openProductModal(item) {
-  const details = PRODUCT_DETAILS[item.name] || {};
+function openProductModal(key, card) {
+  const details = PRODUCT_DETAILS[key] || {};
+  const label = details.label || key;
 
-  modalTitle.textContent = item.name;
+  modalTitle.textContent = label;
   modalDescription.textContent =
     details.description || "Pronto vamos a sumar el detalle completo de este producto.";
 
   modalBenefits.innerHTML = "";
-  (details.benefits || []).forEach((benefit) => {
+  (details.uses || []).forEach((use) => {
     const li = document.createElement("li");
-    li.textContent = benefit;
+    li.textContent = use;
     modalBenefits.appendChild(li);
   });
+  modalBenefits.previousElementSibling.hidden = !(details.uses && details.uses.length);
 
-  modalMedia.innerHTML = details.image
-    ? `<img src="${details.image}" alt="${item.name}" loading="lazy">`
-    : `<span class="modal-media-fallback" style="background:${item.color}; color:${item.color}"></span>`;
+  modalMedia.innerHTML = "";
+  if (details.image) {
+    const img = document.createElement("img");
+    img.src = details.image;
+    img.alt = label;
+    modalMedia.appendChild(img);
+  } else {
+    const swatch = card.querySelector(".product-media-empty");
+    const color = swatch ? getComputedStyle(swatch).getPropertyValue("--swatch").trim() : "#a6ff4d";
+    const dot = document.createElement("span");
+    dot.className = "modal-media-fallback";
+    dot.style.background = color;
+    dot.style.color = color;
+    modalMedia.appendChild(dot);
+  }
 
-  const message = encodeURIComponent(`Hola Mini Vegetales, quiero consultar por ${item.name}`);
+  const message = encodeURIComponent(`Hola Mini Vegetales, quiero consultar por ${label}`);
   modalCta.href = `https://wa.me/56979886031?text=${message}`;
 
   modalOverlay.hidden = false;
@@ -120,7 +132,7 @@ function openProductModal(item) {
 function closeProductModal() {
   modalOverlay.hidden = true;
   document.body.style.overflow = "";
-  if (lastFocusedChip) lastFocusedChip.focus();
+  if (lastFocusedCard) lastFocusedCard.focus();
 }
 
 modalClose.addEventListener("click", closeProductModal);
@@ -128,30 +140,33 @@ modalOverlay.addEventListener("click", (event) => {
   if (event.target === modalOverlay) closeProductModal();
 });
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !modalOverlay.hidden) closeProductModal();
+  if (modalOverlay.hidden) return;
+  if (event.key === "Escape") {
+    closeProductModal();
+    return;
+  }
+  // Mantener el foco dentro del modal mientras está abierto
+  if (event.key === "Tab") {
+    const focusables = modalOverlay.querySelectorAll("a[href], button:not([disabled])");
+    if (!focusables.length) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
 });
 
-function chip(v) {
-  const el = document.createElement("button");
-  el.type = "button";
-  el.className = "variety-chip";
-  el.innerHTML = `<span class="swatch" style="background:${v.color}; box-shadow:0 0 8px ${v.color}"></span>${v.name}<span class="chip-hint">+</span>`;
-  el.addEventListener("click", () => {
-    lastFocusedChip = el;
-    openProductModal(v);
+document.querySelectorAll(".product-card").forEach((card) => {
+  card.addEventListener("click", () => {
+    lastFocusedCard = card;
+    openProductModal(card.dataset.product, card);
   });
-  return el;
-}
-
-// duplicate each list so the CSS marquee (translateX -50%) loops seamlessly
-function renderMarquee(trackId, items) {
-  const track = document.getElementById(trackId);
-  if (!track) return;
-  [...items, ...items].forEach((v) => track.appendChild(chip(v)));
-}
-
-renderMarquee("marqueeTrack", VARIEDADES);
-renderMarquee("marqueeTrackFlores", FLORES);
+});
 
 // ---- Navbar background on scroll ----
 const navbar = document.getElementById("navbar");
@@ -159,7 +174,7 @@ window.addEventListener("scroll", () => {
   navbar.style.background = window.scrollY > 40
     ? "rgba(6, 10, 8, 0.85)"
     : "rgba(6, 10, 8, 0.55)";
-});
+}, { passive: true });
 
 // ---- Ambient particle canvas (lightweight, pure vanilla) ----
 const canvas = document.getElementById("fx-canvas");
@@ -202,7 +217,6 @@ function drawParticles() {
   requestAnimationFrame(drawParticles);
 }
 
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 if (!prefersReducedMotion) {
   resizeCanvas();
   initParticles();
