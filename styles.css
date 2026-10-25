@@ -475,9 +475,11 @@ img { max-width: 100%; height: auto; display: block; }
 .modal-card {
   position: relative;
   width: 100%;
-  max-width: 640px;
-  max-height: 86vh;
+  max-width: 880px;
+  max-height: 88vh;
   overflow-y: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
   background: var(--bg-soft);
   border: 1px solid var(--panel-border);
   border-radius: 24px;
@@ -502,8 +504,9 @@ img { max-width: 100%; height: auto; display: block; }
 
 .modal-media {
   width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 24px 24px 0 0;
+  aspect-ratio: 1 / 1;
+  align-self: start;
+  border-radius: 24px 0 0 24px;
   overflow: hidden;
   background: linear-gradient(135deg, rgba(166,255,77,0.12), rgba(155,107,255,0.12));
   display: flex;
@@ -517,7 +520,7 @@ img { max-width: 100%; height: auto; display: block; }
   box-shadow: 0 0 40px currentColor;
 }
 
-.modal-body { padding: 28px 30px 32px; }
+.modal-body { padding: 56px 34px 32px; align-self: center; }
 .modal-body h3 { font-size: 1.6rem; margin-bottom: 12px; }
 .modal-body p { color: var(--text-dim); font-size: 0.97rem; margin-bottom: 18px; }
 .modal-uses-title { font-size: 0.95rem; margin-bottom: 10px; color: var(--text); }
@@ -578,4 +581,10 @@ button:focus-visible {
     transition: none !important;
   }
   .js [data-reveal] { opacity: 1; transform: none; }
+}
+
+@media (max-width: 760px) {
+  .modal-card { grid-template-columns: 1fr; max-width: 460px; }
+  .modal-media { border-radius: 24px 24px 0 0; max-height: 46vh; }
+  .modal-body { padding: 22px 20px 26px; align-self: stretch; }
 }
