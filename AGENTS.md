@@ -65,6 +65,23 @@ estándar y gratis.
 - Se quitaron los claims de salud de las descripciones (riesgo legal y poco serio para
   cocinas profesionales); ahora hablan de sabor, color y usos en el plato.
 
+## Design tokens (styles.css, bloque `:root`)
+
+Todo valor visual repetido vive como variable CSS; no hardcodear colores ni medidas nuevas.
+
+- **Colores**: canales `--lime-rgb`, `--pink-rgb`, `--cyan-rgb`, `--violet-rgb`, `--bg-rgb`,
+  `--white-rgb` para transparencias: `rgb(var(--lime-rgb) / 0.35)`. `--lime`, `--bg`, etc. son
+  el color pleno. Pendiente: renombrar por rol (`--accent`, `--accent-2`, `--flowers`).
+- **Tipografía**: escala `--fs-xs … --fs-3xl`, más `--fs-h2` y `--fs-display` (fluidos).
+- **Espaciado**: grilla de 4 px, `--sp-N` = N × 4 px (p. ej. `--sp-6` = 24 px).
+- **Radios**: `--radius-xs / -sm / --radius / -lg / -pill / -round`.
+- **Sombras y brillos**: `--glow-md`, `--glow-lg`, `--glow-ambient`, `--shadow-modal`,
+  `--text-glow-lime`, `--text-glow-pink`, `--overlay`. Los brillos de puntos decorativos
+  (3 o 4) quedan literales a propósito.
+- **Movimiento**: `--dur-fast` (.25 s), `--dur-base` (.3 s), `--dur-slow` (.7 s).
+- `script.js` dibuja las partículas con el lima en `rgba(166, 255, 77, …)` literal (canvas no
+  lee variables CSS); si cambia el acento, actualizarlo ahí también.
+
 ## Pendiente / a medio terminar
 
 - **Productos sin foto o con foto equivocada** (`"image": null`): Acelga roja y Albahaca
