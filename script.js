@@ -108,6 +108,7 @@ function orderMessage() {
   if (flores.length) lines.push("", "Flores de temporada:", ...flores.map((n) => `- ${n}`));
   const notes = orderNotes.value.trim();
   if (notes) lines.push("", `Notas: ${notes}`);
+  lines.push("", "(Pedido armado en minivegetales.pages.dev)");
   return lines.join("\n");
 }
 
@@ -203,9 +204,10 @@ let currentKey = null;
 
 function syncProductAddButton() {
   if (!currentKey) return;
+  // Este botón cambia de texto (no usa aria-pressed): el propio texto dice qué hará al tocarlo.
   const inOrder = order.has(currentKey);
-  productAdd.setAttribute("aria-pressed", String(inOrder));
-  productAdd.textContent = inOrder ? "En tu pedido (quitar)" : "Agregar al pedido";
+  productAdd.classList.toggle("is-added", inOrder);
+  productAdd.textContent = inOrder ? "Quitar del pedido" : "Agregar al pedido";
 }
 
 function openProduct(btn) {

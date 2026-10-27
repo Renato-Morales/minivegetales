@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Gloock&display=swap" rel="stylesheet">
   <!-- cache-busting: subir ?v= cada vez que cambie styles.css / script.js / products-data.js -->
-  <link rel="stylesheet" href="styles.css?v=9">
+  <link rel="stylesheet" href="styles.css?v=10">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -347,7 +347,7 @@
           </ul>
           <h3 class="steps-title">Cómo pedir</h3>
           <ol class="steps">
-            <li><span><strong>Armas tu lista</strong> en el catálogo, o nos cuentas por WhatsApp qué necesitas y para cuándo.</span></li>
+            <li><span><strong>Armas tu pedido</strong> en el catálogo, o nos cuentas por WhatsApp qué necesitas y para cuándo.</span></li>
             <li><span><strong>Coordinamos formato y volumen</strong> contigo.</span></li>
             <li><span><strong>Cosechamos y entregamos</strong> el mismo día, o retiras en la granja.</span></li>
           </ol>
@@ -399,7 +399,7 @@
         <div class="faq" data-reveal>
           <details>
             <summary>¿Cómo hago un pedido?</summary>
-            <p>Agrega al pedido las variedades y flores que te interesan y envía la lista por WhatsApp. También puedes escribirnos directo contando qué necesitas y para cuándo. Coordinamos formato, volumen y fecha contigo.</p>
+            <p>Agrega al pedido las variedades y flores que te interesan y envíalo por WhatsApp. También puedes escribirnos directo contando qué necesitas y para cuándo. Coordinamos formato, volumen y fecha contigo.</p>
           </details>
           <details>
             <summary>¿Entregan a domicilio?</summary>
@@ -521,7 +521,7 @@
           <ul class="uses-list" id="productUses"></ul>
         </div>
         <div class="dialog-actions">
-          <button class="btn btn-gold" type="button" id="productAdd" aria-pressed="false">Agregar al pedido</button>
+          <button class="btn btn-gold" type="button" id="productAdd">Agregar al pedido</button>
           <a class="btn btn-outline" id="productWhatsapp" target="_blank" rel="noopener">Consultar por WhatsApp</a>
         </div>
       </div>
@@ -535,23 +535,23 @@
     </button>
     <div class="order-dialog-body">
       <p class="label">Tu pedido</p>
-      <h3 id="orderTitle">Revisa tu lista</h3>
-      <p class="order-empty" id="orderEmpty">Aún no agregaste productos. Elige en el catálogo o escríbenos directo.</p>
+      <h3 id="orderTitle">Revisa tu pedido</h3>
+      <p class="order-empty" id="orderEmpty">Aún no has agregado productos. Elígelos en el catálogo o escríbenos directo por WhatsApp.</p>
       <div id="orderGroups"></div>
       <label class="field" for="orderNotes">
         <span>¿Para cuándo y en qué formato? <em>(opcional)</em></span>
         <textarea id="orderNotes" rows="3" maxlength="400" placeholder="Ej.: entrega el viernes por la mañana, para 40 cubiertos"></textarea>
       </label>
-      <p class="order-hint">Se abrirá WhatsApp con tu lista ya escrita. Te respondemos para confirmar disponibilidad, formato y entrega.</p>
+      <p class="order-hint">Se abrirá WhatsApp con tu pedido ya escrito. Todavía no es una compra: te respondemos para confirmar disponibilidad, formato, precio y entrega.</p>
       <div class="dialog-actions">
-        <a class="btn btn-gold btn-lg" id="orderSend" href="https://wa.me/56979886031" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+        <a class="btn btn-gold btn-lg" id="orderSend" href="https://wa.me/56979886031" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
         <button class="btn btn-outline" type="button" data-close>Seguir agregando</button>
-        <button class="btn-text" type="button" id="orderClear">Vaciar lista</button>
+        <button class="btn-text" type="button" id="orderClear">Vaciar pedido</button>
       </div>
     </div>
   </dialog>
 
   <script src="products-data.js?v=4"></script>
-  <script src="script.js?v=4"></script>
+  <script src="script.js?v=5"></script>
 </body>
 </html>

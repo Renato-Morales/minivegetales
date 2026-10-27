@@ -420,7 +420,7 @@ h2 { font-size: var(--fs-h2); }
 .uses-list { display: grid; gap: var(--sp-2); }
 .uses-list li { padding-left: var(--sp-5); position: relative; }
 .uses-list li::before { content: ""; position: absolute; left: 0; top: 0.65em; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); }
-#productAdd[aria-pressed="true"] { background: var(--forest); color: var(--cream); }
+#productAdd.is-added { background: var(--forest); color: var(--cream); }
 
 .order-dialog { width: min(calc(100% - var(--sp-8)), 560px); }
 .order-dialog-body { padding: var(--sp-10) var(--sp-8) var(--sp-8); }
