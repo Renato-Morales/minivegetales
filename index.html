@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Gloock&display=swap" rel="stylesheet">
   <!-- cache-busting: subir ?v= cada vez que cambie styles.css / script.js / products-data.js -->
-  <link rel="stylesheet" href="styles.css?v=8">
+  <link rel="stylesheet" href="styles.css?v=9">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -497,11 +497,11 @@
   </footer>
 
   <!-- BARRA DE PEDIDO: dos estados (vacía = WhatsApp directo · con productos = revisar y enviar) -->
-  <div class="order-bar" id="orderBar">
+  <aside class="order-bar" id="orderBar" aria-label="Tu pedido">
     <p class="order-bar-text" id="orderBarText">¿Hablamos?</p>
     <a class="btn btn-gold btn-sm" id="orderBarWhatsapp" href="https://wa.me/56979886031?text=Hola%20Mini%20Vegetales" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">Escríbenos</a>
     <button class="btn btn-gold btn-sm" id="orderBarReview" type="button" hidden>Revisar y enviar</button>
-  </div>
+  </aside>
   <div class="sr-only" id="orderStatus" role="status" aria-live="polite"></div>
 
   <!-- DIÁLOGO: DETALLE DE PRODUCTO -->
