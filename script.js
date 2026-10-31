@@ -108,7 +108,7 @@ function orderMessage() {
   if (flores.length) lines.push("", "Flores de temporada:", ...flores.map((n) => `- ${n}`));
   const notes = orderNotes.value.trim();
   if (notes) lines.push("", `Notas: ${notes}`);
-  lines.push("", "(Pedido armado en minivegetales.pages.dev)");
+  lines.push("", "Entiendo que el pedido está sujeto a confirmación de stock.", "", "(Pedido armado en minivegetales.pages.dev)");
   return lines.join("\n");
 }
 

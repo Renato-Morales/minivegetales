@@ -39,7 +39,7 @@ flujo de venta es "escribinos por WhatsApp".
 
 ## Cache-busting
 
-`index.html` referencia `styles.css?v=15`, `script.js?v=7` y `products-data.js?v=4`.
+`index.html` referencia `styles.css?v=15`, `script.js?v=8` y `products-data.js?v=4`.
 **Bumpear ese `?v=` cada vez que se edite cualquiera de esos tres archivos** (mitigación contra
 proxies de datos móviles que sirven copias viejas).
 
