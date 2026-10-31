@@ -112,17 +112,39 @@ function orderMessage() {
   return lines.join("\n");
 }
 
+// Sin productos, la barra solo ofrece "Escríbenos": sobre el hero compite con sus propios botones,
+// así que se esconde mientras el hero está a la vista. Con productos siempre se ve.
+let heroInView = true;
+function syncOrderBarVisibility() {
+  const away = heroInView && order.size === 0;
+  orderBar.classList.toggle("is-away", away);
+  orderBar.inert = away;
+}
+const heroEl = document.querySelector(".hero");
+if (heroEl && "IntersectionObserver" in window) {
+  new IntersectionObserver(([entry]) => {
+    heroInView = entry.isIntersecting;
+    syncOrderBarVisibility();
+  }, { threshold: 0.35 }).observe(heroEl);
+}
+
 function renderOrder(announce) {
   const count = order.size;
 
-  // Botones "Agregar" de las tarjetas y del diálogo de producto
+  // Botones "Agregar" de las tarjetas: la etiqueta dice qué hará el siguiente toque (no usan
+  // aria-pressed: con la etiqueta cambiando sería un doble estado confuso en lectores de pantalla).
   document.querySelectorAll("[data-add]").forEach((btn) => {
-    btn.setAttribute("aria-pressed", String(order.has(btn.dataset.add)));
+    const key = btn.dataset.add;
+    const inOrder = order.has(key);
+    btn.classList.toggle("is-added", inOrder);
+    btn.querySelector(".add-label").textContent = inOrder ? "Quitar" : "Agregar";
+    btn.querySelector(".add-sr").textContent = ` ${labelOf(key)} ${inOrder ? "del" : "al"} pedido`;
   });
   syncProductAddButton();
 
   // Barra inferior: vacía -> WhatsApp directo; con productos -> revisar y enviar
   orderBar.classList.toggle("has-items", count > 0);
+  syncOrderBarVisibility();
   orderBarWhatsapp.hidden = count > 0;
   orderBarReview.hidden = count === 0;
   orderBarText.textContent = count === 0 ? "¿Hablamos?" : count === 1 ? "1 producto en tu pedido" : `${count} productos en tu pedido`;
@@ -241,10 +263,6 @@ function openProduct(btn) {
     const fill = document.createElement("div");
     fill.className = "media-fill";
     if (swatch) fill.style.setProperty("--swatch", swatch.style.getPropertyValue("--swatch"));
-    const note = document.createElement("span");
-    note.className = "media-note";
-    note.textContent = "Foto próximamente";
-    fill.appendChild(note);
     productMedia.appendChild(fill);
   }
 
