@@ -129,4 +129,5 @@ en Instagram, Facebook y LinkedIn.
   contenido. El dominio propio no se ve afectado. No borrar ese archivo.
 - `assets/og-image.jpg` (1200x630) es la imagen al compartir; `favicon.svg/.ico` y `apple-touch-icon.png`
   estan en la raiz. Title <= 65 y description <= 160 caracteres.
-- No se agregaron horarios, coordenadas ni precios al JSON-LD porque no se conocen: no inventarlos.
+- El JSON-LD lleva `geo` y `hasMap` tomados de la ficha real de Google Maps ("Microgreens Minivegetales",
+  `https://maps.app.goo.gl/K3FoAZ9bpMvW95E18`). No se agregaron horarios ni precios porque no se conocen: no inventarlos.
