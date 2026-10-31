@@ -7,7 +7,7 @@ Actualizar esto cuando algo cambie de forma relevante.
 ## Qué es esto
 
 Landing estática (sin build step, sin framework) para **Mini Vegetales**,
-granja vertical de microgreens en Santiago, La Reina. Sin carrito — el
+granja vertical de microgreens en Santiago, Puente Alto. Sin carrito — el
 flujo de venta es "escribinos por WhatsApp".
 
 - **Stack**: HTML/CSS/JS vanilla puro. Nada de npm/bundlers para el sitio
