@@ -92,9 +92,8 @@ Todo valor repetido es un token; no hardcodear colores ni medidas nuevas.
 Producción y dominio:
 - Mergear `rediseno` a `main`, borrar las 5 ramas sobrantes (`actual-tokens`, `actual-corregida`,
   `porcelana`, `berenjena`, `calendula`), subir `?v=` y comparar bytes contra producción.
-- Conectar `minivegetales.cl` a Cloudflare Pages (hoy muestra el sitio viejo). Hasta entonces el SEO,
-  que apunta a ese dominio, no rinde. Después cambiar la firma del pedido en `script.js`
-  ("Pedido armado en minivegetales.pages.dev").
+- Conectar `minivegetales.cl` a Cloudflare Pages y migrar el correo: ver "Dominio y correo" abajo.
+  Hasta entonces el SEO, que apunta a ese dominio, no rinde.
 
 Contenido:
 - Sin foto real (tarjeta con degradado, `"image": null`): Acelga roja, Albahaca, Pensamientos,
@@ -113,6 +112,40 @@ Diseño y rendimiento:
 
 Fuera del repo (lo hace el dueño): Search Console, Google Business Profile, actualizar la dirección
 en Instagram, Facebook y LinkedIn.
+
+## Dominio y correo (plan acordado, nada ejecutado todavia)
+
+Contexto: el desarrollador NO administra `minivegetales.cl`; el dueño si (tiene cPanel y acceso a nic.cl).
+Cuenta de Cloudflare: lo ideal es que quede a nombre del dueño, con el desarrollador como miembro.
+
+Estado actual del dominio (verificado con `dig`, solo lectura):
+- NS: `ns1/2/3.dnsmisitio.net` (DNS del hosting). Web: Apache en `186.64.119.140`.
+- Correo: `MX 0 mail.minivegetales.cl`, en el mismo hosting. SPF con IPs `186.64.118-119.x`, DMARC `p=none`.
+- cPanel: `cpanel.minivegetales.cl` (puerto 2083); webmail: `webmail.minivegetales.cl` (2096).
+- Falta ver (no visible desde afuera): el registro DKIM y subdominios como `autodiscover`. Salen del export de zona.
+
+RIESGO: cambiar los nameservers en nic.cl sin copiar antes los registros deja al dueño sin correo.
+El cambio en nic.cl va AL FINAL, y solo lo hace el dueño.
+
+Orden seguro:
+1. Pedir al dueño capturas del "Editor de zona" de cPanel y un respaldo completo (archivos, correos, BD).
+2. Agregar el dominio a Cloudflare y cargar todos los registros. `mail` y `webmail` SIN proxy (nube gris).
+   Verificar con `dig @<ns de cloudflare>` que todo responde igual que hoy.
+3. El dueño cambia los NS en nic.cl por los dos de Cloudflare. El correo sigue en cPanel.
+4. Conectar el dominio en Pages y probar enviar/recibir. El dominio sirve la rama de produccion (`main`):
+   hay que mergear `rediseno` justo antes, o cambiar la rama de produccion.
+5. Migrar el correo (gratis): opcion A, Cloudflare Email Routing + Gmail "Enviar como" (agregar
+   `include:_spf.google.com` al SPF); opcion B, Zoho Mail plan gratis (buzon real; hoy sin IMAP/POP, verificar
+   en su web porque cambia). Pasar antes los correos viejos (IMAP/Thunderbird), cambiar MX, probar varios dias.
+6. Recien entonces cancelar el hosting. El dominio se renueva en nic.cl, no depende del hosting.
+   No cancelar el hosting antes: ahi vive `info@minivegetales.cl`.
+7. Cambiar la firma del pedido en `script.js` y revisar canonical/OG/sitemap (ya apuntan a `minivegetales.cl`).
+
+`webmail.minivegetales.cl` se puede mantener con una redireccion de Cloudflare (gratis) hacia el webmail del
+proveedor nuevo (`mail.zoho.com` o Gmail). Una URL propia con login de Zoho depende del plan: no confirmado.
+
+Por decidir con el dueño: cuantas direcciones usa y quien las lee; si ya usa Gmail (si es una persona con
+Gmail, la opcion A alcanza); que cosas del sitio viejo quiere conservar (fotos, PDFs) antes de apagarlo.
 
 ## Convenciones
 
