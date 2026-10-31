@@ -1,0 +1,6 @@
+# Los dominios *.pages.dev (produccion y previews por rama) NO deben indexarse:
+# duplicarian el contenido de minivegetales.cl. El dominio propio queda indexable.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex

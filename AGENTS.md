@@ -100,3 +100,12 @@ Todo valor repetido es un token; no hardcodear colores ni medidas nuevas.
   comportamiento).
 - Sin frameworks, sin dependencias nuevas sin preguntar primero — el
   sitio es chico a propósito (YAGNI).
+
+## SEO
+- El dominio final es `https://minivegetales.cl`: va en `canonical`, `og:*`, `twitter:*`, JSON-LD,
+  `robots.txt` y `sitemap.xml`. Si cambia, buscar y reemplazar en esos archivos (`grep -rn minivegetales.cl`).
+- `_headers` pone `X-Robots-Tag: noindex` a todo `*.pages.dev` (produccion y previews) para no duplicar
+  contenido. El dominio propio no se ve afectado. No borrar ese archivo.
+- `assets/og-image.jpg` (1200x630) es la imagen al compartir; `favicon.svg/.ico` y `apple-touch-icon.png`
+  estan en la raiz. Title <= 65 y description <= 160 caracteres.
+- No se agregaron horarios, coordenadas ni precios al JSON-LD porque no se conocen: no inventarlos.
