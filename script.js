@@ -296,3 +296,19 @@ chips.forEach((chip) => {
 });
 
 renderOrder();
+
+// Video de la granja: silencioso y en loop. Solo corre mientras se ve (ahorra batería y datos) y,
+// con "reducir movimiento", no se autorreproduce: queda el póster con controles.
+const farmVideo = document.getElementById("farmVideo");
+if (farmVideo) {
+  if (prefersReducedMotion) {
+    farmVideo.removeAttribute("autoplay");
+    farmVideo.pause();
+    farmVideo.controls = true;
+  } else if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) farmVideo.play().catch(() => {});
+      else farmVideo.pause();
+    }, { threshold: 0.25 }).observe(farmVideo);
+  }
+}
