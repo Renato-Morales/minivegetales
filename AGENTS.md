@@ -85,6 +85,12 @@ Todo valor repetido es un token; no hardcodear colores ni medidas nuevas.
   `index.html`, JSON-LD, `AGENTS.md` y regenerar `assets/og-image.jpg` (lleva la comuna dibujada).
 - Video de la sala de cultivo: `assets/video/granja.mp4` (sin audio, faststart) en la sección "La granja".
   Corre solo mientras se ve; con "reducir movimiento" no se autorreproduce.
+- Aviso "sujeto a confirmación de stock": en la intro del catálogo, en el diálogo del pedido (`.order-hint`)
+  y como línea en el mensaje de WhatsApp (`orderMessage()` en `script.js`). Si se cambia, tocar los tres.
+- Google Maps: la tarjeta "Granja" usa la ficha real `https://maps.app.goo.gl/K3FoAZ9bpMvW95E18`
+  ("Microgreens Minivegetales"). Ya existe un Google Business Profile: falta que el dueño verifique que su
+  dirección diga Puente Alto y no La Reina. Reseñas: solo de clientes reales; ni el equipo ni el dueño deben
+  escribirlas. Idea pendiente: botón "Déjanos tu reseña" con el enlace de reseñas de la ficha (sale de Business Profile).
 - Los archivos del dueño en Windows están en `/mnt/c/Users/Spider.cl/Downloads` (`~/Downloads` está vacía).
 
 ## Pendiente / a medio terminar
