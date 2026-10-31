@@ -77,21 +77,42 @@ Todo valor repetido es un token; no hardcodear colores ni medidas nuevas.
 - Botones: `.btn` + `-gold | -ink | -outline | -outline-light`, tamaños `-sm | -lg`, con estados
   hover, active y disabled.
 
+## Estado actual (actualizar al cerrar cada sesión)
+
+- `rediseno` (preview: `rediseno.minivegetales.pages.dev`) va por delante de `main` y es la versión
+  vigente. **Decisión del dueño: todavía NO mergear a `main`.** No mergear hasta que lo pida.
+- Direccion vigente: Pasaje Río Petrohue 4783, Puente Alto (antes La Reina). Si cambia, buscar en
+  `index.html`, JSON-LD, `AGENTS.md` y regenerar `assets/og-image.jpg` (lleva la comuna dibujada).
+- Video de la sala de cultivo: `assets/video/granja.mp4` (sin audio, faststart) en la sección "La granja".
+  Corre solo mientras se ve; con "reducir movimiento" no se autorreproduce.
+- Los archivos del dueño en Windows están en `/mnt/c/Users/Spider.cl/Downloads` (`~/Downloads` está vacía).
+
 ## Pendiente / a medio terminar
 
-- **Productos sin foto o con foto equivocada** (`"image": null`): Acelga roja y Albahaca
-  (antes usaban la foto del rábano), y las flores de abajo.
-- **Flores sin foto real todavía** (quedan con placeholder de color en
-  el modal, `"image": null` en `products-data.js`):
-  - Pensamientos
-  - Mini Violas
-  - Gypsophillas
-  - (Ya tienen foto: Calendulas, Capuchinas, Claveles Japoneses, Mini
-    Clavel — ver `assets/flores/`)
-- Si llegan fotos nuevas: convertir a JPG optimizado (`PIL`, calidad
-  ~82, max 1200px de lado mayor — mismo criterio usado para las que ya
-  están), guardarlas en `assets/flores/` con nombre kebab-case, y setear
-  el campo `"image"` correspondiente en `products-data.js`.
+Producción y dominio:
+- Mergear `rediseno` a `main`, borrar las 5 ramas sobrantes (`actual-tokens`, `actual-corregida`,
+  `porcelana`, `berenjena`, `calendula`), subir `?v=` y comparar bytes contra producción.
+- Conectar `minivegetales.cl` a Cloudflare Pages (hoy muestra el sitio viejo). Hasta entonces el SEO,
+  que apunta a ese dominio, no rinde. Después cambiar la firma del pedido en `script.js`
+  ("Pedido armado en minivegetales.pages.dev").
+
+Contenido:
+- Sin foto real (tarjeta con degradado, `"image": null`): Acelga roja, Albahaca, Pensamientos,
+  Mini Violas y Gypsophillas. Van al final de su grilla. Si llegan fotos: JPG optimizado (`PIL`,
+  calidad ~82, max 1200 px), `assets/variedades/` o `assets/flores/` en kebab-case, y setear `"image"`.
+- Confirmar la grafía de la calle ("Petrohue" o "Petrohué") y si la zona de reparto cambió.
+
+Diseño y rendimiento:
+- Texto chico y de bajo contraste: línea de estado del filtro (13 px), copyright del footer.
+- En móvil la barra de pedido tapa los botones "Agregar" de la fila inferior (falta padding al final).
+- En tablet (~1000 px) el header parte "Para chefs" y "La granja" en dos líneas.
+- La foto del hero es neón y de aspecto IA; choca con las fotos de producto. Decisión de gusto.
+- Pasar `hero-farm.jpg` (684 KB) y `microgreens-macro.jpg` (787 KB) a WebP. Las fuentes vienen de
+  Google Fonts (dependencia externa).
+- No probado: Escape cerrando diálogos con tecla real, menú hamburguesa, autoplay en Safari/iOS real.
+
+Fuera del repo (lo hace el dueño): Search Console, Google Business Profile, actualizar la dirección
+en Instagram, Facebook y LinkedIn.
 
 ## Convenciones
 
